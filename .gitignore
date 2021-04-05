@@ -1,0 +1,10 @@
+.pio
+.vscode/
+*.lst
+*.map
+*.code-workspace
+data/
+sheets/
+*.zip
+html/
+
