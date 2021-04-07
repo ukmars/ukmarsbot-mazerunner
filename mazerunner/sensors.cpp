@@ -4,7 +4,7 @@
  * File Created: Monday, 29th March 2021 11:05:58 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Monday, 5th April 2021 9:42:53 pm
+ * Last Modified: Tuesday, 6th April 2021 11:37:29 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -119,19 +119,20 @@ int get_sensor(int channel) {
 //***************************************************************************//
 
 /**
- * The steering adjustment is an angular velocity that is added to the
- * current rotation command so that the robot can be kept central in
+ * The steering adjustment is an angular error that is added to the
+ * current encoder angle so that the robot can be kept central in
  * a maze cell.
  *
  * A PD controller is used to generate the adjustment and the two constants
  * will need to be adjusted for the best reposnse. You may find that only
  * the P term is needed
  *
- * The steering adjustment is limited to prevent over-correction
+ * The steering adjustment is limited to prevent over-correction. You should
+ * experiment with that as well.
  *
  * @brief Calculate the steering adjustment from the cross-track error.
  * @param error calculated from wall sensors, Negative if too far right
- * @return steering adjustment in degrees per second
+ * @return steering adjustment in degrees
  */
 float calculate_steering_adjustment(float error) {
   // always calculate the adjustment for testing. It may not get used.

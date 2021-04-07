@@ -1,10 +1,10 @@
 /*
  * File: sensors.h
- * Project: mazerunner
+ * Project: documents
  * File Created: Monday, 29th March 2021 11:05:58 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Monday, 5th April 2021 3:07:40 pm
+ * Last Modified: Monday, 5th April 2021 10:40:01 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -78,7 +78,7 @@ float calculate_steering_adjustment(float error);
 int get_switches();
 int get_sensor(int channel);
 
-// TODO - make these NOT inline
+// TODO - make these NOT inline and move to UI
 inline bool button_pressed() {
   return get_switches() == 16;
 }

@@ -1,10 +1,10 @@
 /*
  * File: tests.cpp
- * Project: vw-control
+ * Project: mazerunner
  * File Created: Tuesday, 16th March 2021 10:17:18 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Sunday, 4th April 2021 11:56:01 pm
+ * Last Modified: Tuesday, 6th April 2021 11:17:13 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -142,7 +142,7 @@ void test_controller_tuning(Profile &profile) {
  * value from the profiler. There is no 'correct' way to do this but,
  * if you want repeatable results, alway use the same technique.
  *
- * If the robot physical turn angle is less than expected, reduce the
+ * If the robot physical turn angle is less than expected, increase the
  * MOUSE_RADIUS.
  *
  * @brief perform n * 360 degree turn-in-place
