@@ -33,7 +33,9 @@ env.AddPostAction(
     env.VerboseAction(" ".join([
         "clang-format -i ",
         # " --verbose ",
-        "${PROJECT_SRC_DIR}/*",
+        "${PROJECT_SRC_DIR}/*.cpp",
+        "${PROJECT_SRC_DIR}/*.h",
+        "${PROJECT_SRC_DIR}/*.ino",
     ]), "Format sources in ${PROJECT_SRC_DIR}")
 )
 
