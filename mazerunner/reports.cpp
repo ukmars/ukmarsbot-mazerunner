@@ -4,7 +4,7 @@
  * File Created: Tuesday, 23rd March 2021 10:18:00 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Monday, 5th April 2021 3:05:25 pm
+ * Last Modified: Wednesday, 7th April 2021 10:39:48 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -205,6 +205,9 @@ void report_wall_sensors() {
   Serial.print('(');
   Serial.print(right_raw);
   Serial.print(')');
+  Serial.print(' ');
+  Serial.print(g_cross_track_error);
+  Serial.print(' ');
 }
 
 //***************************************************************************//
