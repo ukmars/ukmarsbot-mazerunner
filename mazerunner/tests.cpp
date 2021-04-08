@@ -4,7 +4,7 @@
  * File Created: Tuesday, 16th March 2021 10:17:18 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Tuesday, 6th April 2021 11:17:13 pm
+ * Last Modified: Wednesday, 7th April 2021 3:47:15 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -471,8 +471,8 @@ void run_test(int test) {
       test_15();
       break;
     default:
-      stop_motors();
-      disable_motor_controllers();
+      disable_sensors();
+      reset_drive_system();
       break;
   }
 }
