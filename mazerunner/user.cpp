@@ -1,10 +1,10 @@
 /*
  * File: user.cpp
- * Project: vw-control
+ * Project: mazerunner
  * File Created: Wednesday, 24th March 2021 2:10:17 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Sunday, 4th April 2021 11:20:26 pm
+ * Last Modified: Wednesday, 7th April 2021 4:02:59 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -34,6 +34,7 @@
 #include "encoders.h"
 #include "motion.h"
 #include "motors.h"
+#include "profile.h"
 #include "reports.h"
 #include "sensors.h"
 #include "tests.h"
@@ -48,6 +49,19 @@ void user_follow_wall() {
   // This is just an example and not expected to do anything
 }
 
+void user_log_front_sensor() {
+  enable_sensors();
+  reset_drive_system();
+  enable_motor_controllers();
+  report_front_sensor_track_header();
+  forward.start(-200, 100, 0, 500);
+  while (not forward.is_finished()) {
+    report_front_sensor_track();
+  }
+  reset_drive_system();
+  disable_sensors();
+}
+
 void run_mouse(int function) {
   switch (function) {
     case 0:
@@ -56,6 +70,7 @@ void run_mouse(int function) {
     case 1:
       // enter your function call here
       // NOTE: will start on button click
+      user_log_front_sensor();
       break;
     case 2:
       // enter your function call here
@@ -100,7 +115,8 @@ void run_mouse(int function) {
       user_follow_wall();
       break;
     default:
-      // do nothing
+      disable_sensors();
+      reset_drive_system();
       break;
   }
 };
