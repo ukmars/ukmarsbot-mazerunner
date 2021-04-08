@@ -4,7 +4,7 @@
  * File Created: Monday, 5th April 2021 8:38:15 am
  * Author: Peter Harrison
  * -----
- * Last Modified: Monday, 5th April 2021 3:33:30 pm
+ * Last Modified: Thursday, 8th April 2021 8:38:41 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -31,6 +31,7 @@
  */
 
 #include "encoders.h"
+#include "maze.h"
 #include "motors.h"
 #include "reports.h"
 #include "sensors.h"
@@ -46,7 +47,7 @@ void setup() {
   Serial.begin(BAUDRATE);
   load_settings_from_eeprom();
 #if ALWAYS_USE_DEFAULT_SETTINGS
-  // used during development to make sure compiled-in values are used
+  // used during development to make sure compiled-in defaults are used
   restore_default_settings();
 #endif
   setup_systick();
@@ -54,10 +55,11 @@ void setup() {
   pinMode(EMITTER_A, OUTPUT);
   pinMode(EMITTER_B, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
+  enable_sensors();
+  initialise_maze(emptyMaze);
   setup_motors();
   setup_encoders();
   setup_adc();
-  enable_sensors();
   Serial.println();
   for (int i = 0; i < get_settings_count(); i++) {
     print_setting_details(i, 5);
