@@ -1,10 +1,10 @@
 /*
  * File: logger.h
- * Project: vw-control
+ * Project: mazerunner
  * File Created: Tuesday, 23rd March 2021 10:18:19 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Sunday, 4th April 2021 11:26:07 pm
+ * Last Modified: Wednesday, 7th April 2021 4:02:59 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -61,6 +61,9 @@ void report_profile_header();
 
 void report_sensor_track_header();
 void report_sensor_track();
+
+void report_front_sensor_track_header();
+void report_front_sensor_track();
 
 void report_wall_sensors();
 

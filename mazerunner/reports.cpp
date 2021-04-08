@@ -4,7 +4,7 @@
  * File Created: Tuesday, 23rd March 2021 10:18:00 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Wednesday, 7th April 2021 10:39:48 am
+ * Last Modified: Thursday, 8th April 2021 8:40:39 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -118,13 +118,39 @@ void report_sensor_track() {
     Serial.print(' ');
     Serial.print(g_left_wall_sensor);
     Serial.print(' ');
-    Serial.print(-g_right_wall_sensor);
+    Serial.print(g_front_wall_sensor_raw);
+    Serial.print(' ');
+    Serial.print(g_right_wall_sensor);
     Serial.print(' ');
     Serial.print(g_front_wall_sensor);
     Serial.print(' ');
     Serial.print(g_cross_track_error);
     Serial.print(' ');
     Serial.print(g_steering_adjustment);
+    Serial.println();
+  }
+#endif
+}
+
+void report_front_sensor_track_header() {
+#if DEBUG_LOGGING == 1
+  Serial.println(F("time pos front_normal front_raw"));
+  start_time = millis();
+  report_time = start_time;
+#endif
+}
+
+void report_front_sensor_track() {
+#if DEBUG_LOGGING == 1
+  if (millis() >= report_time) {
+    report_time += report_interval;
+    Serial.print(millis() - start_time);
+    Serial.print(' ');
+    Serial.print(fabsf(robot_position()));
+    Serial.print(' ');
+    Serial.print(g_front_wall_sensor);
+    Serial.print(' ');
+    Serial.print(g_front_wall_sensor_raw);
     Serial.println();
   }
 #endif
@@ -310,7 +336,7 @@ static char dirChars[] = "^>v<*";
 
 void print_maze_with_directions() {
   Serial.println();
-  ;
+  flood_maze(maze_goal());
   for (int row = 15; row >= 0; row--) {
     printNorthWalls(row);
     for (int col = 0; col < 16; col++) {
