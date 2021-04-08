@@ -4,7 +4,7 @@
  * File Created: Sunday, 28th March 2021 2:44:24 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Monday, 5th April 2021 3:32:57 pm
+ * Last Modified: Thursday, 8th April 2021 10:04:41 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -37,6 +37,7 @@
 #include "sensors.h"
 #include "settings.h"
 #include "tests.h"
+#include "user.h"
 #include <Arduino.h>
 
 #define MAX_DIGITS 8
@@ -141,6 +142,34 @@ uint8_t read_float(const char *line, float &value) {
     value = is_minus ? -b : b;
   }
   return digits;
+}
+
+int cli_run_test(const Args args) {
+  if (args.argc < 2) {
+    run_test(get_switches());
+    return T_OK;
+  }
+  int test_number = -1;
+  read_integer(args.argv[1], test_number);
+  if (test_number < 0) {
+    return T_UNEXPECTED_TOKEN;
+  }
+  run_test(test_number);
+  return T_OK;
+}
+
+int cli_run_user(const Args args) {
+  if (args.argc < 2) {
+    run_mouse(get_switches());
+    return T_OK;
+  }
+  int test_number = -1;
+  read_integer(args.argv[1], test_number);
+  if (test_number < 0) {
+    return T_UNEXPECTED_TOKEN;
+  }
+  run_mouse(test_number);
+  return T_OK;
 }
 
 int cli_settings_command(const Args &args) {
@@ -251,30 +280,18 @@ void cli_prompt() {
 }
 
 void cli_interpret(const Args &args) {
-  //TODO - remove these debugging lines
-  for (int i = 0; i < args.argc; i++) {
-    Serial.println(args.argv[i]);
-  }
   if (strlen(args.argv[0]) == 1) {
-    char c = args.argv[0][0];
+    // These are all single-character commands
+    char c = args.argv[0][0]; //  first character of first token
     switch (c) {
       case '$':
         cli_settings_command(args);
         break;
-      case 'G':
-        Serial.println(F("Go - search"));
-        break;
-      case 'I':
-        Serial.println(F("Mouse info"));
-        break;
-      case 'W':
-        Serial.println(F("export wall data"));
-        break;
-      case 'M':
-        Serial.println(F("print maze map"));
+      case 'w':
+        print_maze_plain();
         break;
       case 'R':
-        Serial.println(F("print maze route"));
+        print_maze_with_directions();
         break;
       case 'S':
         enable_sensors();
@@ -282,13 +299,22 @@ void cli_interpret(const Args &args) {
         report_wall_sensors();
         disable_sensors();
         break;
-
+      case 'T':
+        cli_run_test(args);
+        break;
+      case 'U':
+        cli_run_user(args);
+        break;
       default:
         break;
     }
     return;
   }
   // parse multi-character commands here
+  //TODO - remove these debugging lines
+  for (int i = 0; i < args.argc; i++) {
+    Serial.println(args.argv[i]);
+  }
 }
 
 void cli_run() {

@@ -8,18 +8,19 @@ Note that the commands are case insensitive and anything you type is converted t
 
 ## Simple commands
 
-So far the following commands are interpreted though the corresponding function (like 'Search') may not be implemented and are placeholders. These are in italics. Use the existing code as a basis for your own extensions.
+So far the following single-character commands are interpreted. Where a command is followed by 'n', that is an indication that a numeric argument must be supplied.
 
-| cmd  | Function                                        |
-|:----:|-------------------------------------------------|
-| 'G'  | _'Go' - Search the maze and perform speed runs_ |
-| 'I'  | _'Info' - display Information about the robot_  |
-| 'W'  | _'Walls' - print wall data_                     |
-| 'M'  | _'Map' - display the current maze map_          |
-| 'R'  | _'Route' - display the current best route_      |
-| 'S'  | _'Sensors' - one line of sensor data            |
-| '$'  | Settings commands - see below  |
 
+| cmd       | Function                                        |
+|:----------|-------------------------------------------------|
+| W         | 'Walls' - display the current maze map          |
+| R         | 'Route' - display the current best route        |
+| S         | 'Sensors' - one line of sensor data             |
+| T n       | 'Test' - Run Test number n                      |
+| U n       | 'User' - Run User function n                    |
+| $         | Settings commands - see below                   |
+
+---
 
 ## Settings commands
 
