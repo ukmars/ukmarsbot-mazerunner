@@ -198,7 +198,7 @@ float update_wall_sensors() {
   g_left_wall_present = g_left_wall_sensor > settings.left_threshold;
   g_right_wall_present = g_right_wall_sensor > settings.right_threshold;
   g_front_wall_present = g_front_wall_sensor > settings.front_threshold;
-  // calculate the alignment errors - too far right is negative
+  // calculate the alignment errors - too far left is negative
   float error = 0;
   float right_error = settings.right_nominal - g_right_wall_sensor;
   float left_error = settings.left_nominal - g_left_wall_sensor;
