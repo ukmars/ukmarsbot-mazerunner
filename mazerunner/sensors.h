@@ -76,7 +76,6 @@ void disable_steering();
 float calculate_steering_adjustment(float error);
 
 int get_switches();
-int get_sensor(int channel);
 
 // TODO - make these NOT inline and move to UI
 inline bool button_pressed() {
