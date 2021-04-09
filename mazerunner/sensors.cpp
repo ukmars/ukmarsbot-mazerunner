@@ -4,7 +4,7 @@
  * File Created: Monday, 29th March 2021 11:05:58 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Tuesday, 6th April 2021 11:37:29 pm
+ * Last Modified: Friday, 9th April 2021 11:45:39 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -65,7 +65,7 @@ volatile float g_steering_adjustment;
 /***  Local variables ***/
 static float last_steering_error = 0;
 static volatile bool s_sensors_enabled = false;
-static volatile int sensor[6];
+static volatile int adc[6];
 static volatile int battery_adc_reading;
 static volatile int switches_adc_reading;
 
@@ -176,28 +176,31 @@ void update_battery_voltage() {
  *
  * Note: Runs in the systick interrupt. DO NOT call this directly.
  * @brief update the global wall sensor values.
- * @return robot cross-track-error. Too far right is negative.
+ * @return robot cross-track-error. Too far left is negative.
  */
 float update_wall_sensors() {
   if (not s_sensors_enabled) {
     return 0;
   }
   // they should never be negative
-  sensor[0] = max(0, sensor[0]);
-  sensor[1] = max(0, sensor[1]);
-  sensor[2] = max(0, sensor[2]);
+  adc[0] = max(0, adc[0]);
+  adc[1] = max(0, adc[1]);
+  adc[2] = max(0, adc[2]);
   // keep these values for calibration assistance
-  g_right_wall_sensor_raw = sensor[0];
-  g_front_wall_sensor_raw = sensor[1];
-  g_left_wall_sensor_raw = sensor[2];
+  g_right_wall_sensor_raw = adc[0];
+  g_front_wall_sensor_raw = adc[1];
+  g_left_wall_sensor_raw = adc[2];
+
   // normalise to a nominal value of 100
-  g_right_wall_sensor = (int)(sensor[0] * settings.right_adjust);
-  g_front_wall_sensor = (int)(sensor[1] * settings.front_adjust);
-  g_left_wall_sensor = (int)(sensor[2] * settings.left_adjust);
+  g_right_wall_sensor = (int)(g_right_wall_sensor_raw * settings.right_adjust);
+  g_front_wall_sensor = (int)(g_front_wall_sensor_raw * settings.front_adjust);
+  g_left_wall_sensor = (int)(g_left_wall_sensor_raw * settings.left_adjust);
+
   // set the wall detection flags
   g_left_wall_present = g_left_wall_sensor > settings.left_threshold;
   g_right_wall_present = g_right_wall_sensor > settings.right_threshold;
   g_front_wall_present = g_front_wall_sensor > settings.front_threshold;
+
   // calculate the alignment errors - too far left is negative
   float error = 0;
   float right_error = settings.right_nominal - g_right_wall_sensor;
@@ -301,27 +304,27 @@ ISR(ADC_vect) {
       start_adc(RIGHT_WALL_SENSOR);
       break;
     case 3:
-      sensor[0] = get_adc_result();
+      adc[0] = get_adc_result();
       start_adc(FRONT_WALL_SENSOR);
       break;
     case 4:
-      sensor[1] = get_adc_result();
+      adc[1] = get_adc_result();
       start_adc(LEFT_WALL_SENSOR);
       break;
     case 5:
-      sensor[2] = get_adc_result();
+      adc[2] = get_adc_result();
       start_adc(A3);
       break;
     case 6:
-      sensor[3] = get_adc_result();
+      adc[3] = get_adc_result();
       start_adc(A4);
       break;
     case 7:
-      sensor[4] = get_adc_result();
+      adc[4] = get_adc_result();
       start_adc(A5);
       break;
     case 8:
-      sensor[5] = get_adc_result();
+      adc[5] = get_adc_result();
       if (s_sensors_enabled) {
         // got all the dark ones so light them up
         digitalWriteFast(EMITTER, 1);
@@ -333,27 +336,27 @@ ISR(ADC_vect) {
       start_adc(RIGHT_WALL_SENSOR);
       break;
     case 10:
-      sensor[0] = get_adc_result() - sensor[0];
+      adc[0] = get_adc_result() - adc[0];
       start_adc(FRONT_WALL_SENSOR);
       break;
     case 11:
-      sensor[1] = get_adc_result() - sensor[1];
+      adc[1] = get_adc_result() - adc[1];
       start_adc(LEFT_WALL_SENSOR);
       break;
     case 12:
-      sensor[2] = get_adc_result() - sensor[2];
+      adc[2] = get_adc_result() - adc[2];
       start_adc(A3);
       break;
     case 13:
-      sensor[3] = get_adc_result() - sensor[3];
+      adc[3] = get_adc_result() - adc[3];
       start_adc(A4);
       break;
     case 14:
-      sensor[4] = get_adc_result() - sensor[4];
+      adc[4] = get_adc_result() - adc[4];
       start_adc(A5);
       break;
     case 15:
-      sensor[5] = get_adc_result() - sensor[5];
+      adc[5] = get_adc_result() - adc[5];
       digitalWriteFast(EMITTER, 0);
       bitClear(ADCSRA, ADIE); // turn off the interrupt
       break;

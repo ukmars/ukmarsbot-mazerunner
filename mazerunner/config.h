@@ -1,10 +1,10 @@
 /*
  * File: config.h
- * Project: vw-control
+ * Project: mazerunner
  * File Created: Monday, 29th March 2021 11:04:59 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Thursday, 1st April 2021 10:47:26 pm
+ * Last Modified: Friday, 9th April 2021 11:45:23 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -163,7 +163,7 @@ const uint8_t EMITTER_A = 11;
 const uint8_t EMITTER_B = 12;
 const uint8_t EMITTER = 12; // alias for pin 12
 
-// these arethe sensor ADC channels in case we have no special use for a given channel
+// these are the sensor ADC channels in case we have no special use for a given channel
 const uint8_t SENSOR_0 = A0;
 const uint8_t SENSOR_1 = A1;
 const uint8_t SENSOR_2 = A2;
@@ -175,6 +175,7 @@ const uint8_t SENSOR_5 = A5;
 const uint8_t RIGHT_WALL_SENSOR = A0;
 const uint8_t FRONT_WALL_SENSOR = A1;
 const uint8_t LEFT_WALL_SENSOR = A2;
+
 const uint8_t FUNCTION_PIN = A6;
 const uint8_t BATTERY_VOLTS = A7;
 //***************************************************************************//
