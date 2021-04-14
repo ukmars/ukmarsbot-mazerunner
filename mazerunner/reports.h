@@ -4,7 +4,7 @@
  * File Created: Tuesday, 23rd March 2021 10:18:19 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Wednesday, 7th April 2021 4:02:59 pm
+ * Last Modified: Wednesday, 14th April 2021 4:36:51 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -61,6 +61,7 @@ void report_profile_header();
 
 void report_sensor_track_header();
 void report_sensor_track();
+void report_sensor_track_raw();
 
 void report_front_sensor_track_header();
 void report_front_sensor_track();

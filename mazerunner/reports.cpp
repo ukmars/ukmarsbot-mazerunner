@@ -4,7 +4,7 @@
  * File Created: Tuesday, 23rd March 2021 10:18:00 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Thursday, 8th April 2021 8:40:39 am
+ * Last Modified: Wednesday, 14th April 2021 4:36:51 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -118,11 +118,33 @@ void report_sensor_track() {
     Serial.print(' ');
     Serial.print(g_left_wall_sensor);
     Serial.print(' ');
-    Serial.print(g_front_wall_sensor_raw);
-    Serial.print(' ');
     Serial.print(g_right_wall_sensor);
     Serial.print(' ');
     Serial.print(g_front_wall_sensor);
+    Serial.print(' ');
+    Serial.print(g_cross_track_error);
+    Serial.print(' ');
+    Serial.print(g_steering_adjustment);
+    Serial.println();
+  }
+#endif
+}
+
+void report_sensor_track_raw() {
+#if DEBUG_LOGGING == 1
+  if (millis() >= report_time) {
+    report_time += report_interval;
+    Serial.print(millis() - start_time);
+    Serial.print(' ');
+    Serial.print(robot_position());
+    Serial.print(' ');
+    Serial.print(robot_angle());
+    Serial.print(' ');
+    Serial.print(g_left_wall_sensor_raw);
+    Serial.print(' ');
+    Serial.print(g_right_wall_sensor_raw);
+    Serial.print(' ');
+    Serial.print(g_front_wall_sensor_raw);
     Serial.print(' ');
     Serial.print(g_cross_track_error);
     Serial.print(' ');
