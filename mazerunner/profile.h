@@ -1,10 +1,10 @@
 /*
  * File: profile.h
- * Project: vw-control
+ * Project: mazerunner
  * File Created: Tuesday, 16th March 2021 11:25:24 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Sunday, 4th April 2021 11:32:13 pm
+ * Last Modified: Friday, 9th April 2021 10:24:17 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -148,6 +148,10 @@ class Profile {
   // normally only used to alter position for forward error correction
   void adjust_position(float adjustment) {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) { m_position += adjustment; }
+  }
+
+  void set_position(float position) {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) { m_position = position; }
   }
 
   // update is called from within systick and shoul dbe safe from interrupts
