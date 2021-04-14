@@ -455,14 +455,14 @@ void test_edge_detection() {
   }
   Serial.print(F("Left: "));
   if (left_edge_found) {
-    Serial.print(left_edge_position);
+    Serial.print(BACK_WALL_TO_CENTER + left_edge_position);
   } else {
     Serial.print('-');
   }
 
   Serial.print(F("  Right: "));
   if (right_edge_found) {
-    Serial.print(right_edge_position);
+    Serial.print(BACK_WALL_TO_CENTER + right_edge_position);
   } else {
     Serial.print('-');
   }

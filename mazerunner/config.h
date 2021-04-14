@@ -4,7 +4,7 @@
  * File Created: Monday, 29th March 2021 11:04:59 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Friday, 9th April 2021 11:45:23 am
+ * Last Modified: Wednesday, 14th April 2021 1:12:15 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -125,6 +125,11 @@ const int RIGHT_THRESHOLD = 40; // minimum value to register a wall
 
 //***************************************************************************//
 //***************************************************************************//
+// Some physical constants that are likely to be board -specific
+
+// with robot against back wall, how much travel is there to the cell center?
+const int BACK_WALL_TO_CENTER = 47;
+
 //***************************************************************************//
 
 // Control loop timing. Pre-calculate to save time in interrupts
