@@ -39,6 +39,8 @@
 #define SOUTH 2
 #define WEST 3
 
+#define VISITED 0xF0
+
 #define INVALID_DIRECTION (0)
 #define MAX_COST 255
 
@@ -48,6 +50,14 @@ extern const uint8_t japan2007[];
 extern uint8_t cost[256];
 extern uint8_t walls[256];
 
+inline void mark_cell_visited(uint8_t cell) {
+  walls[cell] |= VISITED;
+}
+
+inline bool cell_is_visited(uint8_t cell) {
+  return (walls[cell] & VISITED) == VISITED;
+}
+
 inline bool is_exit(uint8_t cell, uint8_t direction) {
   return ((walls[cell] & (1 << direction)) == 0);
 }
@@ -55,6 +65,7 @@ inline bool is_exit(uint8_t cell, uint8_t direction) {
 inline bool is_wall(uint8_t cell, uint8_t direction) {
   return ((walls[cell] & (1 << direction)) != 0);
 }
+
 void set_maze_goal(uint8_t goal_cell);
 uint8_t maze_goal();
 
