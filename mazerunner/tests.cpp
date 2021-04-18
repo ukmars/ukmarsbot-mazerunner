@@ -222,7 +222,7 @@ void test_sprint_and_return() {
 
 /** TEST 11
  *
- * Illistrates how to combine forward motion with rotation to get a smooth,
+ * Illustrates how to combine forward motion with rotation to get a smooth,
  * integrated turn.
  *
  * All the parameters in the call to rotation.start() interact with the
@@ -308,7 +308,7 @@ void test_stop_at() {
 
 /** TEST 13
  *
- * Once test 10 (sprint_and_retirn) are running successfully, it is time to get
+ * Once test 10 (sprint_and_return) are running successfully, it is time to get
  * the steering controls working. This test does the same forward-180-back run
  * that is used in test 10 but has the steering enabled.
  *
