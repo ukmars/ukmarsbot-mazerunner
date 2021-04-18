@@ -1,7 +1,7 @@
 /Release/
 /sloeber.ino.cpp
 
-# Sloeber projects are defined by 
+# Sloeber projects are defined by sloeber.cfg not the Eclipse files
 .cproject
 .project
 .settings/
