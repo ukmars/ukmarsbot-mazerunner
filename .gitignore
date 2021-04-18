@@ -8,3 +8,5 @@ sheets/
 *.zip
 html/
 
+# Ignore Mac files
+.DS_Store
