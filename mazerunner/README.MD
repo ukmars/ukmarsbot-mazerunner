@@ -27,7 +27,7 @@ Before doing anything else, get the sensors running and fairly well calibrated. 
   - the second pair is the front sensor (raw front)
   - the third pair is for the right sensor (raw right)
 
-Write down the raw values obtained with the robot properly oriented and enter them into config.h as the FRONT_CALIBRATIOM, LEFT_CALIBRATIOM and RIGHT_CALIBRATIOM values. I have visible emitters and, for me, the values are:
+Write down the raw values obtained with the robot properly oriented and enter them into config.h as the FRONT_CALIBRATION, LEFT_CALIBRATION and RIGHT_CALIBRATION values. I have visible emitters and, for me, the values are:
 
 
     //***** SENSOR CALIBRATION **************************************************//
@@ -81,7 +81,7 @@ Once the basic calibration is done, there are four controller constants to adjus
 
 #### Test 6 and Test 7
 
-These tests exercise the controllers and put the robot through a sequence of movements - forward for test 6, rotation for test 7. They run for 2 seconds and pump telemetry out to the terminal. You can graph the data in Excel and adjust the controller constants to get the best response. Note that the encoders are intrinsicaly noisy and so, if you try to calculate the speed, you will likely see a very spiky response. Within readon, we don't much care about the speed. If the controllers are dog their job, it will work itself out.
+These tests exercise the controllers and put the robot through a sequence of movements - forward for test 6, rotation for test 7. They run for 2 seconds and pump telemetry out to the terminal. You can graph the data in Excel and adjust the controller constants to get the best response. Note that the encoders are intrinsicaly noisy and so, if you try to calculate the speed, you will likely see a very spiky response. Within reason, we don't much care about the speed. If the controllers are dog their job, it will work itself out.
 
 
 ### Other Tests
