@@ -140,7 +140,7 @@ void test_controller_tuning(Profile &profile) {
  * rotation.position() function to get the current angle. The robot_angle
  * is measured from the encoders while rotation.position() is the set
  * value from the profiler. There is no 'correct' way to do this but,
- * if you want repeatable results, alway use the same technique.
+ * if you want repeatable results, always use the same technique.
  *
  * If the robot physical turn angle is less than expected, increase the
  * MOUSE_RADIUS.
@@ -222,7 +222,7 @@ void test_sprint_and_return() {
 
 /** TEST 11
  *
- * Illistrates how to combine forward motion with rotation to get a smooth,
+ * Illustrates how to combine forward motion with rotation to get a smooth,
  * integrated turn.
  *
  * All the parameters in the call to rotation.start() interact with the
@@ -308,7 +308,7 @@ void test_stop_at() {
 
 /** TEST 13
  *
- * Once test 10 (sprint_and_retirn) are running successfully, it is time to get
+ * Once test 10 (sprint_and_return) are running successfully, it is time to get
  * the steering controls working. This test does the same forward-180-back run
  * that is used in test 10 but has the steering enabled.
  *
