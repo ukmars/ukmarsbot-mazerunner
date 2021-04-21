@@ -140,7 +140,7 @@ void test_controller_tuning(Profile &profile) {
  * rotation.position() function to get the current angle. The robot_angle
  * is measured from the encoders while rotation.position() is the set
  * value from the profiler. There is no 'correct' way to do this but,
- * if you want repeatable results, alway use the same technique.
+ * if you want repeatable results, always use the same technique.
  *
  * If the robot physical turn angle is less than expected, increase the
  * MOUSE_RADIUS.

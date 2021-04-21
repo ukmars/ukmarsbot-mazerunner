@@ -119,7 +119,7 @@ int get_switches() {
  * a maze cell.
  *
  * A PD controller is used to generate the adjustment and the two constants
- * will need to be adjusted for the best reposnse. You may find that only
+ * will need to be adjusted for the best response. You may find that only
  * the P term is needed
  *
  * The steering adjustment is limited to prevent over-correction. You should
