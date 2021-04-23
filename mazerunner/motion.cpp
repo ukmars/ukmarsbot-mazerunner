@@ -4,7 +4,7 @@
  * File Created: Wednesday, 24th March 2021 6:29:39 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Monday, 5th April 2021 2:55:02 pm
+ * Last Modified: Friday, 23rd April 2021 9:29:56 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -157,6 +157,29 @@ void stop_after(float distance) {
   while (not forward.is_finished()) {
     report_profile();
   }
+}
+
+/**
+ * The robot is assumed to be moving. This utility function call will just
+ * do a busy-wait until the forward profile gets to the supplied position.
+ *
+ * @brief wait until the given position is reached
+ */
+void wait_until_position(float position) {
+  while (forward.position() < position) {
+    delay(2);
+  }
+}
+
+/**
+ * The robot is assumed to be moving. This utility function call will just
+ * do a busy-wait until the forward profile has moved by the given distance.
+ *
+ * @brief wait until the given distance has been travelled
+ */
+void wait_until_distance(float distance) {
+  float target = forward.position() + distance;
+  wait_until_position(target);
 }
 
 //***************************************************************************//
