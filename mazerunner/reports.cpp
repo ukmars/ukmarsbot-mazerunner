@@ -270,6 +270,7 @@ void print_hex_2(unsigned char value) {
 
 void print_justified(int v, int spaces) {
   spaces--;
+  int vv = v;
   if (v < 0) {
     spaces--;
   }
@@ -280,7 +281,7 @@ void print_justified(int v, int spaces) {
     Serial.print(' ');
     --spaces;
   }
-  Serial.print(v);
+  Serial.print(vv);
 }
 
 /***
