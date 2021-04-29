@@ -61,10 +61,6 @@ void setup() {
   setup_encoders();
   setup_adc();
   Serial.println();
-  for (int i = 0; i < get_settings_count(); i++) {
-    print_setting_details(i, 5);
-    Serial.println(';');
-  }
   disable_sensors();
   Serial.println(F("RDY"));
 }
