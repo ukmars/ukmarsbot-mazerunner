@@ -70,8 +70,8 @@ const float ROT_KP = 2.1;
 const float ROT_KD = 1.2;
 
 // controller constants for the steering controller
-const float STEERING_KP = 1.0;
-const float STEERING_KD = 1.0;
+const float STEERING_KP = 0.25;
+const float STEERING_KD = 0.00;
 const float STEERING_ADJUST_LIMIT = 10.0; // deg/s
 
 // Motor Feedforward
