@@ -1,6 +1,6 @@
 /*
  * File: settings.cpp
- * Project: vw-control
+ * Project: mazerunner
  *
  *  File Created: Tuesday, 2nd March 2021 2:41:08 pm
  *  MIT License
@@ -135,16 +135,19 @@ void dump_settings_detail(const int dp) {
 }
 
 void reset_eeprom_settings_to_defaults() {
+  Serial.println(F("Settings restored to  defaults"));
   restore_default_settings();
   save_settings_to_eeprom();
 }
 
 void save_settings_to_eeprom() {
+  Serial.println(F("Settings saved"));
   EEPROM.put(SETTINGS_EEPROM_ADDRESS, settings);
 }
 
 void load_settings_from_eeprom(bool verbose) {
   Settings eeprom_settings;
+  Serial.println(F("Settings loaded"));
   EEPROM.get(SETTINGS_EEPROM_ADDRESS, eeprom_settings);
   if (eeprom_settings.revision == SETTINGS_REVISION) {
     settings = eeprom_settings;
