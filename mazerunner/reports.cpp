@@ -4,7 +4,7 @@
  * File Created: Tuesday, 23rd March 2021 10:18:00 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Wednesday, 14th April 2021 4:36:51 pm
+ * Last Modified: Thursday, 29th April 2021 9:44:01 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -75,6 +75,8 @@ void report_profile() {
     Serial.print(50 * (g_right_motor_volts - g_left_motor_volts));
     Serial.println();
   }
+#else
+  delay(2);
 #endif
 }
 
@@ -127,6 +129,8 @@ void report_sensor_track() {
     Serial.print(g_steering_adjustment);
     Serial.println();
   }
+#else
+  delay(2);
 #endif
 }
 
@@ -151,6 +155,8 @@ void report_sensor_track_raw() {
     Serial.print(g_steering_adjustment);
     Serial.println();
   }
+#else
+  delay(2);
 #endif
 }
 
@@ -175,6 +181,8 @@ void report_front_sensor_track() {
     Serial.print(g_front_wall_sensor_raw);
     Serial.println();
   }
+#else
+  delay(2);
 #endif
 }
 
@@ -201,6 +209,8 @@ void report_encoders() {
     Serial.print(int(robot_angle()));
     Serial.println();
   }
+#else
+  delay(2);
 #endif
 }
 
@@ -218,6 +228,8 @@ void report_pose() {
   Serial.print(F(" rot : "));
   Serial.print(rotation.position());
   Serial.println();
+#else
+  delay(2);
 #endif
 }
 
