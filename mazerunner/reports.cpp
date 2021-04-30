@@ -280,20 +280,21 @@ void print_hex_2(unsigned char value) {
   Serial.print(value, HEX);
 }
 
-void print_justified(int v, int spaces) {
-  spaces--;
-  int vv = v;
+void print_justified(int value, int width) {
+  int v = value;
+  int w = width;
+  w--;
   if (v < 0) {
-    spaces--;
+    w--;
   }
   while (v /= 10) {
-    spaces--;
+    w--;
   }
-  while (spaces > 0) {
-    Serial.print(' ');
-    --spaces;
+  while (w > 0) {
+    Serial.write(' ');
+    --w;
   }
-  Serial.print(vv);
+  Serial.print(value);
 }
 
 /***

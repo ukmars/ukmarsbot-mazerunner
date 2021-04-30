@@ -95,7 +95,7 @@ void report_encoder_header();
 void report_pose();
 
 void print_hex_2(unsigned char value);
-void print_justified(int v, int spaces);
+void print_justified(int value, int width);
 void print_maze_plain();
 void print_maze_with_costs();
 void print_maze_with_directions();
