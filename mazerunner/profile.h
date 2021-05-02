@@ -96,25 +96,17 @@ class Profile {
     m_state = CS_ACCELERATING;
   }
 
-// bring the speed to zero and wait until that is true
   void stop() {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
       m_target_speed = 0;
     }
-    while(not is_finished()){
-      delay(2);
-    }
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-      m_target_speed = 0;
-      m_speed = 0;
-    }
-
+    finish();
   }
 
   void finish() {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      m_speed = m_target_speed;
       m_state = CS_FINISHED;
-      m_target_speed = m_speed;
     }
   }
 
@@ -208,7 +200,7 @@ class Profile {
     }
     // increment the position
     m_position += m_speed * LOOP_INTERVAL;
-    if (remaining < 0.125) {
+    if (m_state != CS_FINISHED && remaining < 0.125) {
       m_state = CS_FINISHED;
       m_target_speed = m_final_speed;
     }
