@@ -96,6 +96,28 @@ class Profile {
     m_state = CS_ACCELERATING;
   }
 
+// bring the speed to zero and wait until that is true
+  void stop() {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      m_target_speed = 0;
+    }
+    while(not is_finished()){
+      delay(2);
+    }
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      m_target_speed = 0;
+      m_speed = 0;
+    }
+
+  }
+
+  void finish() {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      m_state = CS_FINISHED;
+      m_target_speed = m_speed;
+    }
+  }
+
   void set_state(ProfileState state) { m_state = state; }
 
   float get_braking_distance() {
