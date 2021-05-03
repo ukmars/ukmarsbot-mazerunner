@@ -43,7 +43,7 @@ const bool USER_MODE = false;
 //***************************************************************************//
 // We need to know about the drive mechanics.
 
-const float WHEEL_DIAMETER = 33.298; // Adjust on test
+const float WHEEL_DIAMETER = 31.966; //33.298; // Adjust on test
 const float ENCODER_PULSES = 12.0;
 const float GEAR_RATIO = 19.54;
 
@@ -51,7 +51,7 @@ const float GEAR_RATIO = 19.54;
 // A good starting approximation is half the distance between the wheel centres.
 // After testing, you may find the working value to be larger or smaller by some
 // small amount.
-const float MOUSE_RADIUS = 39.50; // Adjust on test
+const float MOUSE_RADIUS = 37.92; //39.50; // Adjust on test
 
 // The robot is likely to have wheels of different diameters and that must be
 // compensated for if the robot is to reliably drive in a straight line
