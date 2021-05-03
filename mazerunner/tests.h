@@ -29,5 +29,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#ifndef TEST_H
+#define TEST_H
 
 void run_test(int test);
+void test_spin_turn(float angle);
+#endif
