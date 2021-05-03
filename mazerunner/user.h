@@ -30,4 +30,9 @@
  * SOFTWARE.
  */
 
+#ifndef USER_H
+#define USER_H
+
 void run_mouse(int function);
+
+#endif
