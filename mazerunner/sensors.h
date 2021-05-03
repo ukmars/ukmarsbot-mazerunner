@@ -34,7 +34,7 @@
 #define SENSORS_H
 
 #include <arduino.h>
-
+#include <util/atomic.h>
 //***************************************************************************//
 extern volatile float g_battery_voltage;
 extern volatile float g_battery_scale; // adjusts PWM for voltage changes
@@ -59,6 +59,30 @@ extern volatile bool g_right_wall_present;
 extern bool g_steering_enabled;
 extern volatile float g_cross_track_error;
 extern volatile float g_steering_adjustment;
+
+inline int get_left_sensor() {
+  int value;
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    value = g_left_wall_sensor;
+  }
+  return value;
+}
+
+inline int get_front_sensor() {
+  int value;
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    value = g_front_wall_sensor;
+  }
+  return value;
+}
+
+inline int get_right_sensor() {
+  int value;
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    value = g_right_wall_sensor;
+  }
+  return value;
+}
 
 //***************************************************************************//
 void setup_adc();
