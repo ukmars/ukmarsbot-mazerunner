@@ -38,7 +38,7 @@
 // force rewrite of EEPROM settings. Set this when developing
 #define ALWAYS_USE_DEFAULT_SETTINGS 0
 //***************************************************************************//
-const bool USER_MODE = false;
+const bool USER_MODE = true;
 
 //***************************************************************************//
 // We need to know about the drive mechanics.
