@@ -4,7 +4,7 @@
  * File Created: Friday, 23rd April 2021 9:09:16 am
  * Author: Peter Harrison
  * -----
- * Last Modified: Friday, 23rd April 2021 11:25:07 am
+ * Last Modified: Friday, 23rd April 2021 11:51:45 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -78,5 +78,7 @@ int mouseRunMaze();
 
 bool pathGenerate(unsigned char startCell);
 void pathExpand(char *pathString);
+
+void print_path();
 
 #endif //MOUSE_H

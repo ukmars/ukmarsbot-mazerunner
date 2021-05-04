@@ -4,7 +4,7 @@
  * File Created: Friday, 23rd April 2021 9:09:10 am
  * Author: Peter Harrison
  * -----
- * Last Modified: Friday, 23rd April 2021 11:31:13 am
+ * Last Modified: Friday, 23rd April 2021 12:53:49 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -43,8 +43,8 @@
 
 Mouse mouse;
 
-char path[256];
-char commands[256];
+char path[128];
+char commands[128];
 char mouseState __attribute__((section(".noinit")));
 
 void mouseInit() {
@@ -732,4 +732,11 @@ void pathExpand(char *pathString) {
     }
   }
   commands[commandIndex] = '\0';
+}
+
+void print_path() {
+  for (int i = 0; i < 128 && path[i]; i++) {
+    Serial.print(path[i]);
+  }
+  Serial.println();
 }
