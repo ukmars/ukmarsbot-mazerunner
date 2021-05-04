@@ -422,63 +422,87 @@ void Mouse::report_status() {
  *         -1 if the maze has no route to the target.
  */
 int Mouse::search_to(unsigned char target) {
+
   flood_maze(target);
-  report_status();
-  // // debug << F("  searching to: ") << target << endl;
-  if (cost[location] == MAX_COST) {
-    return -1;
+  // wait_for_front_sensor();
+  delay(1000);
+  enable_sensors();
+  reset_drive_system();
+  enable_motor_controllers();
+  if (not handStart) {
+    forward.start(-60, 120, 0, 1000);
+    while (not forward.is_finished()) {
+      delay(2);
+    }
   }
-  unsigned char newHeading;
-  if (handStart) { // implies that the heading is correct
-    handStart = false;
-    // move to the cell centre
-    forward.start(40, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
-  } else {
-    newHeading = direction_to_smallest(location, heading);
-    turn_to_face(newHeading);
+  forward.start(BACK_WALL_TO_CENTER, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
+  while (not forward.is_finished()) {
+    delay(2);
   }
+  forward.set_position(90);
+  Serial.println(F("Off we go..."));
+  wait_until_position(170);
   // TODO. the robot needs to start each iteration at the sensing point
   while (location != target) {
-    // here the mouse is always at the center of the cell and may be
-    // stationary or moving
-    enable_steering();
-    forward.start(25, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
-    wait_until_position(90);
-    // now we are at the cell boundary
-    location = neighbour(location, heading);
-    update_sensors();
-    report_status();
-    update_map();
-    flood_maze(target);
-    if (location == target) {
-      stopAndAdjust();
+    if (button_pressed()) {
       break;
     }
-    if (cost[location] == MAX_COST) { // are we walled in
-      stopAndAdjust();
-      return -1;
-    }
-    newHeading = direction_to_smallest(location, heading);
+    Serial.println();
+    log_status('-');
+    enable_steering();
+    location = neighbour(location, heading);
+    update_sensors();
+    update_map();
+    flood_maze(target);
+    unsigned char newHeading = direction_to_smallest(location, heading);
     unsigned char hdgChange = (newHeading - heading) & 0x3;
-    switch (hdgChange) {
-      case 0: // ahead
-        wait_until_position(180);
-        break;
-      case 1: // right
-        turn_SS90ER();
-        heading = (heading + 1) & 0x03;
-        break;
-      case 2: // behind
-        stopAndAdjust();
-        turnIP180();
-        heading = (heading + 2) & 0x03;
-        break;
-      case 3: // left
-        turn_SS90EL();
-        heading = (heading + 3) & 0x03;
-        break;
+    Serial.print(hdgChange);
+    Serial.write(' ');
+    Serial.write('|');
+    Serial.write(' ');
+    log_status('.');
+    if (location == target) {
+      end_run();
+      heading = (heading + 2) & 0x03;
+    } else {
+
+      switch (hdgChange) {
+        case 0: // ahead
+          forward.adjust_position(-180);
+          log_status('F');
+          wait_until_position(170);
+          log_status('x');
+          break;
+        case 1: // right
+          turn_SS90ER();
+          heading = (heading + 1) & 0x03;
+          log_status('x');
+          break;
+        case 2: // behind
+          turn_around();
+          heading = (heading + 2) & 0x03;
+          log_status('x');
+          break;
+        case 3: // left
+          turn_SS90EL();
+          heading = (heading + 3) & 0x03;
+          log_status('x');
+          break;
+      }
     }
   }
+  Serial.println();
+  Serial.println(F("Arrived!  "));
+  for (int i = 0; i < 4; i++) {
+    disable_sensors();
+    delay(250);
+    enable_sensors();
+    delay(250);
+  }
+  disable_sensors();
+
+  report_status();
+  reset_drive_system();
   return 0;
 }
 
