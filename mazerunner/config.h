@@ -4,7 +4,7 @@
  * File Created: Monday, 29th March 2021 11:04:59 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Thursday, 29th April 2021 9:39:09 am
+ * Last Modified: Thursday, 29th April 2021 9:44:34 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -34,7 +34,6 @@
 #define CONFIG_H
 
 #include <arduino.h>
-
 
 // force rewrite of EEPROM settings. Set this when developing
 #define ALWAYS_USE_DEFAULT_SETTINGS 0
@@ -145,8 +144,8 @@ const int DEFAULT_DECIMAL_PLACES = 5;
 const int EEPROM_ADDR_SETTINGS = 0x0000;
 
 //***************************************************************************//
-// set this to false to disable profile data logging over serial
-#define DEBUG_LOGGING false
+// set this to zero to disable profile data logging over serial
+#define DEBUG_LOGGING 0
 // time between logged lined when reporting is enabled (milliseconds)
 const int REPORTING_INTERVAL = 10;
 
