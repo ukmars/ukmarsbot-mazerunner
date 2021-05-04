@@ -126,6 +126,30 @@ void move_forward(float distance, float top_speed, float end_speed) {
 
 //***************************************************************************//
 
+void Mouse::end_run() {
+  bool has_wall = frontWall;
+  disable_steering();
+  log_status('T');
+  float remaining = 270 - forward.position();
+  forward.start(remaining, forward.speed(), 30, forward.acceleration());
+  if (has_wall) {
+    while (get_front_sensor() < 850) {
+      delay(2);
+    }
+  } else {
+    while (not forward.is_finished()) {
+      delay(2);
+    }
+  }
+  Serial.print(' ');
+  Serial.print(get_front_sensor());
+  Serial.print('@');
+  Serial.print(forward.position());
+  Serial.print(' ');
+  // Be sure robot has come to a halt.
+  forward.stop();
+  spin_turn(-180, SPEEDMAX_SPIN_TURN, SPIN_TURN_ACCELERATION);
+}
 /** Search turns
  *
  * These turns assume that the robot is crossing the cell boundary but is still
@@ -309,7 +333,7 @@ void Mouse::follow_to(unsigned char target) {
     Serial.write(' ');
     log_status('.');
     if (location == target) {
-      stopAndAdjust();
+      end_run();
     } else if (!leftWall) {
       turn_SS90EL();
       heading = (heading + 3) & 0x03;
