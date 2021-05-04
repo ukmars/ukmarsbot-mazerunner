@@ -4,7 +4,7 @@
  * File Created: Friday, 23rd April 2021 9:09:10 am
  * Author: Peter Harrison
  * -----
- * Last Modified: Friday, 30th April 2021 11:10:16 am
+ * Last Modified: Friday, 30th April 2021 11:12:33 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -123,6 +123,10 @@ void move_forward(float distance, float top_speed, float end_speed) {
  *
  */
 void turn_SS90ER() {
+  Serial.print('R');
+  Serial.print('@');
+  Serial.print(' ');
+  Serial.println(forward.position());
   stopAndAdjust();
   turn_IP90R();
   /*
@@ -149,6 +153,10 @@ void turn_SS90ER() {
 }
 
 void turn_SS90EL() {
+  Serial.print('L');
+  Serial.print('@');
+  Serial.print(' ');
+  Serial.println(forward.position());
   stopAndAdjust();
   turn_IP90L();
   /*
