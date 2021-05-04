@@ -100,9 +100,38 @@ void run_mouse(int function) {
       break;
     case 7:
       // enter your function call here
+      reset_drive_system();
+      enable_motor_controllers();
+      forward.start(500, SPEEDMAX_EXPLORE, 0, 1000);
+      while (not forward.is_finished()) {
+        delay(2);
+      }
+      // forward.set_position(90);
+      // Serial.println(F("Off we go..."));
+      // // wait_until_position(170);
+      // stop_at(170);
+      Serial.print('@');
+      print_justified((int)forward.position(), 4);
+      Serial.print(' ');
+      Serial.println();
       break;
     case 8:
       // enter your function call here
+      reset_drive_system();
+      enable_motor_controllers();
+      forward.start(BACK_WALL_TO_CENTER + 80, SPEEDMAX_EXPLORE, 0, SEARCH_ACCELERATION);
+      while (not forward.is_finished()) {
+        delay(2);
+      }
+      // forward.set_position(90);
+      // Serial.println(F("Off we go..."));
+      // // wait_until_position(170);
+      // stop_at(170);
+      Serial.print('@');
+      print_justified((int)forward.position(), 4);
+      Serial.print(' ');
+      Serial.println();
+
       break;
     case 9: {
       reset_drive_system();
@@ -122,6 +151,7 @@ void run_mouse(int function) {
     } break;
     case 10:
       // enter your function call here
+      test_spin_turn(360);
       break;
     case 11:
       // reserved
