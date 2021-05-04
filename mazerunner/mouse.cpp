@@ -287,6 +287,9 @@ void Mouse::log_status(char action) {
   print_hex_2(location);
   Serial.print(dirLetters[heading]);
   Serial.print(')');
+  Serial.print('[');
+  print_justified(get_front_sensor(), 3);
+  Serial.print(']');
   Serial.print('@');
   print_justified((int)forward.position(), 4);
   Serial.print(' ');
