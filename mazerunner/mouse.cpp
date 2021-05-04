@@ -194,27 +194,41 @@ void Mouse::turn_SS90EL() {
   forward.set_position(170);
 }
 
+/**
+ * As with all the search turns, this command will be called after the robot has
+ * reached the search decision point and decided its next move. It is not known 
+ * how long that takes or what the exact position will be.
+ * 
+ * Turning around is always going to be an in-place operation so it is important
+ * that the robot is stationary and as well centered as possible.
+ * 
+ * It only takes 27mm of travel to come to a halt from normal search speed. 
+ * 
+ * 
+ */
 void Mouse::turn_around() {
   bool has_wall = frontWall;
   disable_steering();
   log_status('A');
   float remaining = 270 - forward.position();
-  forward.start(remaining, forward.speed(), 0, forward.acceleration());
-  while (not forward.is_finished()) {
-    delay(2);
-    if (g_front_wall_sensor > 550) {
-      forward.finish();
-    }
-  }
+  forward.start(remaining, forward.speed(), 30, forward.acceleration());
   if (has_wall) {
-    forward.start(10, 50, 50, SEARCH_ACCELERATION);
-    while (g_front_wall_sensor < 620) {
+    while (get_front_sensor() < 850) {
+      delay(2);
+    }
+  } else {
+    while (not forward.is_finished()) {
       delay(2);
     }
   }
- // Be sure robot has come to a halt.
+  Serial.print(' ');
+  Serial.print(get_front_sensor());
+  Serial.print('@');
+  Serial.print(forward.position());
+  Serial.print(' ');
+  // Be sure robot has come to a halt.
   forward.stop();
-  spin_turn(180, SPEEDMAX_SPIN_TURN, SPIN_TURN_ACCELERATION);
+  spin_turn(-180, SPEEDMAX_SPIN_TURN, SPIN_TURN_ACCELERATION);
   forward.start(80, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
     delay(2);
@@ -310,7 +324,6 @@ void Mouse::follow_to(unsigned char target) {
       heading = (heading + 1) & 0x03;
       log_status('x');
     } else {
-      log_status('A');
       turn_around();
       heading = (heading + 2) & 0x03;
       log_status('x');
