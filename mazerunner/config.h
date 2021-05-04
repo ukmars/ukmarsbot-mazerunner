@@ -128,7 +128,7 @@ const int RIGHT_THRESHOLD = 40; // minimum value to register a wall
 // Some physical constants that are likely to be board -specific
 
 // with robot against back wall, how much travel is there to the cell center?
-const int BACK_WALL_TO_CENTER = 47;
+const int BACK_WALL_TO_CENTER = 48;
 
 //***************************************************************************//
 
