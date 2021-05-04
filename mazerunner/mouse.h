@@ -55,8 +55,11 @@ class Mouse {
   void init();
   void report_status();
   void update_sensors();
+  void log_status(char action);
   void set_heading(unsigned char new_heading);
   void turn_to_face(unsigned char new_heading);
+  void turn_SS90EL();
+  void turn_SS90ER();
   int search_to(unsigned char target);
   void follow_to(unsigned char target);
   void run_in_place_turns(int top_speed);

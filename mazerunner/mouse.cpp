@@ -49,6 +49,23 @@ char p_mouse_state __attribute__((section(".noinit")));
 
 static char dirLetters[] = "NESW";
 
+void print_walls() {
+  if (g_left_wall_present) {
+    Serial.print('L');
+  } else {
+    Serial.print('-');
+  }
+  if (g_front_wall_present) {
+    Serial.print('F');
+  } else {
+    Serial.print('-');
+  }
+  if (g_right_wall_present) {
+    Serial.print('R');
+  } else {
+    Serial.print('-');
+  }
+}
 //***************************************************************************//
 /**
  * Used to bring the mouse to a halt, centered in a cell.
@@ -59,7 +76,7 @@ static char dirLetters[] = "NESW";
  * TODO: need a function just to adjust forward position
  */
 static void stopAndAdjust() {
-  float remaining = 180 - forward.position();
+  float remaining = 270 - forward.position();
   disable_steering();
   forward.start(remaining, forward.speed(), 0, forward.acceleration());
   while (not forward.is_finished() && g_front_wall_sensor < 550) {
@@ -119,67 +136,74 @@ void move_forward(float distance, float top_speed, float end_speed) {
  *
  * Does NOT update the mouse heading but it should
  *
- * TODO: make these Mouse methods.
+ * TODO: There is only just enough space to get down to turn speed. Increase turn speed to 350?
  *
  */
-void turn_SS90ER() {
-  Serial.print('R');
-  Serial.print('@');
-  Serial.print(' ');
-  Serial.println(forward.position());
-  stopAndAdjust();
-  turn_IP90R();
-  /*
-    float run_in = 20.0;       // mm
-  float run_out = 20.0;      // mm
-  float turn_speed = 300;    // mm/s
-  float acceleration = 2000; // mm/s/s
-  float angle = -90.0;       // deg
-  float omega = 280;         // deg/s
-  float alpha = 2000;        // deg/s/s
-  forward.start(run_in, turn_speed, turn_speed, acceleration);
+void Mouse::turn_SS90ER() {
+
+  float run_in = 20.0;  // mm
+  float run_out = 15.0; // mm
+  float angle = -90.0;  // deg
+  float omega = 280;    // deg/s
+  float alpha = 4000;   // deg/s/s
+  disable_steering();
+  float distance = 190.0 - forward.position();
+  // probably about 15mm of travel to start getting down to turn speed.
+  forward.start(distance, forward.speed(), DEFAULT_TURN_SPEED, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
-    report_profile();
+    delay(2);
   }
+  // now we should be 10mm past the boundary so do the run_in
+  forward.start(run_in, forward.speed(), DEFAULT_TURN_SPEED, SEARCH_ACCELERATION);
+  while (not forward.is_finished()) {
+    delay(2);
+    if (g_front_wall_sensor > 64) {
+      break;
+    }
+  }
+  log_status('R');
   rotation.start(angle, omega, 0, alpha);
   while (not rotation.is_finished()) {
-    report_profile();
+    delay(2);
   }
-  forward.start(run_out, turn_speed, turn_speed, acceleration);
+  forward.start(run_out, forward.speed(), DEFAULT_SEARCH_SPEED, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
-    report_profile();
+    delay(2);
   }
-  */
+  forward.set_position(170);
 }
 
-void turn_SS90EL() {
-  Serial.print('L');
-  Serial.print('@');
-  Serial.print(' ');
-  Serial.println(forward.position());
-  stopAndAdjust();
-  turn_IP90L();
-  /*
-    float run_in = 20.0;       // mm
-  float run_out = 20.0;      // mm
-  float turn_speed = 300;    // mm/s
-  float acceleration = 2000; // mm/s/s
-  float angle = 90.0;        // deg
-  float omega = 280;         // deg/s
-  float alpha = 2000;        // deg/s/s
-  forward.start(run_in, turn_speed, turn_speed, acceleration);
+void Mouse::turn_SS90EL() {
+
+  float run_in = 20.0;  // mm
+  float run_out = 15.0; // mm
+  float angle = 90.0;   // deg
+  float omega = 280;    // deg/s
+  float alpha = 4000;   // deg/s/s
+  disable_steering();
+  float distance = 190.0 - forward.position();
+  forward.start(distance, forward.speed(), DEFAULT_TURN_SPEED, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
-    report_profile();
+    delay(2);
   }
+  // now we should be 10mm past the boundary so do the run_in
+  forward.start(run_in, forward.speed(), DEFAULT_TURN_SPEED, SEARCH_ACCELERATION);
+  while (not forward.is_finished()) {
+    delay(2);
+    if (g_front_wall_sensor > 64) {
+      break;
+    }
+  }
+  log_status('L');
   rotation.start(angle, omega, 0, alpha);
   while (not rotation.is_finished()) {
-    report_profile();
+    delay(2);
   }
-  forward.start(run_out, turn_speed, turn_speed, acceleration);
+  forward.start(run_out, forward.speed(), DEFAULT_SEARCH_SPEED, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
-    report_profile();
+    delay(2);
   }
-  */
+  forward.set_position(170);
 }
 
 //***************************************************************************//
@@ -202,6 +226,22 @@ void Mouse::update_sensors() {
   frontWall = (g_front_wall_present);
 }
 
+void Mouse::log_status(char action) {
+  Serial.print(' ');
+  Serial.print(action);
+  Serial.print('(');
+  print_hex_2(location);
+  Serial.print(dirLetters[heading]);
+  Serial.print(')');
+  Serial.print('@');
+  print_justified((int)forward.position(), 4);
+  Serial.print(' ');
+  print_walls();
+  Serial.print(' ');
+  Serial.print('|');
+  Serial.print(' ');
+}
+
 void Mouse::follow_to(unsigned char target) {
   handStart = true;
   location = 0;
@@ -209,47 +249,73 @@ void Mouse::follow_to(unsigned char target) {
   initialise_maze(emptyMaze);
   flood_maze(maze_goal());
   wait_for_front_sensor();
+  enable_sensors();
   reset_drive_system();
   enable_motor_controllers();
   forward.start(BACK_WALL_TO_CENTER, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
     delay(2);
   }
-  Serial.println(F("Off we go"));
-  // at the start of this loop we are always in a cell center and may be moving or stationary
+  forward.set_position(90);
+  Serial.println(F("Off we go..."));
+  wait_until_position(170);
+  // at the start of this loop we are always at the sensing point
   while (location != target) {
     if (button_pressed()) {
       break;
     }
-    enable_sensors();
-    forward.start(40, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
-    wait_until_position(40);
+    Serial.println();
+    log_status('-');
     enable_steering();
-    wait_until_position(80);
     location = neighbour(location, heading);
     update_sensors();
     update_map();
-    report_wall_sensors();
-    report_status();
+    flood_maze(maze_goal());
+    unsigned char newHeading = direction_to_smallest(location, heading);
+    unsigned char hdgChange = (newHeading - heading) & 0x3;
+    Serial.print(hdgChange);
+    Serial.write(' ');
+    Serial.write('|');
+    Serial.write(' ');
+    log_status('.');
     if (location == target) {
       stopAndAdjust();
     } else if (!leftWall) {
       turn_SS90EL();
       heading = (heading + 3) & 0x03;
+      log_status('x');
     } else if (!frontWall) {
-      Serial.println(F("FRWD "));
-      wait_until_position(180);
+      forward.adjust_position(-180);
+      log_status('F');
+      wait_until_position(170);
+      log_status('x');
     } else if (!rightWall) {
       turn_SS90ER();
       heading = (heading + 1) & 0x03;
+      log_status('x');
     } else {
+      log_status('A');
       stopAndAdjust();
-      Serial.println(F("IP180"));
       turnIP180();
       heading = (heading + 2) & 0x03;
+      forward.start(80, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
+      while (not forward.is_finished()) {
+        delay(2);
+      }
+      forward.set_position(170);
+      log_status('x');
     }
   }
-  Serial.print(F("Arrived!  "));
+  Serial.println();
+  Serial.println(F("Arrived!  "));
+  for (int i = 0; i < 4; i++) {
+    disable_sensors();
+    delay(250);
+    enable_sensors();
+    delay(250);
+  }
+  disable_sensors();
+
   report_status();
   reset_drive_system();
 }
