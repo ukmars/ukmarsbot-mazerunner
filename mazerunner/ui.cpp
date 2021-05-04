@@ -288,7 +288,7 @@ void cli_interpret(const Args &args) {
       case '$':
         cli_settings_command(args);
         break;
-      case 'w':
+      case 'W':
         print_maze_plain();
         break;
       case 'R':
