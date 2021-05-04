@@ -228,9 +228,18 @@ void run_mouse(int function) {
       break;
     case 13:
       // reserved
+      user_test_back_wall_start();
       break;
     case 14:
-      user_test_back_wall_start();
+      Serial.println("Search TO");
+      dorothy.handStart = true;
+      dorothy.location = 0;
+      dorothy.heading = NORTH;
+      dorothy.search_to(maze_goal());
+      dorothy.handStart = false;
+      dorothy.search_to(0);
+      dorothy.search_to(maze_goal());
+
       break;
     case 15:
       Serial.println("Follow TO");
