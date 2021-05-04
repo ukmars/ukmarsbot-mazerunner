@@ -147,18 +147,12 @@ void Mouse::turn_SS90ER() {
   float omega = 280;    // deg/s
   float alpha = 4000;   // deg/s/s
   disable_steering();
-  float distance = 190.0 - forward.position();
-  // probably about 15mm of travel to start getting down to turn speed.
+  float distance = 190.0 + run_in - forward.position();
   forward.start(distance, forward.speed(), DEFAULT_TURN_SPEED, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
     delay(2);
-  }
-  // now we should be 10mm past the boundary so do the run_in
-  forward.start(run_in, forward.speed(), DEFAULT_TURN_SPEED, SEARCH_ACCELERATION);
-  while (not forward.is_finished()) {
-    delay(2);
     if (g_front_wall_sensor > 64) {
-      break;
+      forward.set_state(CS_FINISHED);
     }
   }
   log_status('R');
@@ -181,17 +175,12 @@ void Mouse::turn_SS90EL() {
   float omega = 280;    // deg/s
   float alpha = 4000;   // deg/s/s
   disable_steering();
-  float distance = 190.0 - forward.position();
+  float distance = 190.0 + run_in - forward.position();
   forward.start(distance, forward.speed(), DEFAULT_TURN_SPEED, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
     delay(2);
-  }
-  // now we should be 10mm past the boundary so do the run_in
-  forward.start(run_in, forward.speed(), DEFAULT_TURN_SPEED, SEARCH_ACCELERATION);
-  while (not forward.is_finished()) {
-    delay(2);
     if (g_front_wall_sensor > 64) {
-      break;
+      forward.set_state(CS_FINISHED);
     }
   }
   log_status('L');
