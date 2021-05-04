@@ -2,6 +2,8 @@
 
 This repository will hold a complete set of code for a version of UKMARSBOT that can run in a classic micromouse maze.
 
+The main branch has the functional components. The implementation of these into a working micromouse are in the Dorothy branch.
+
 The code assumes you have a standard UKMARSBOT assembled, using an Arduino nano with a basic wall sensor connected.
 
 ### Arduino IDE users
