@@ -183,7 +183,8 @@ int cli_settings_command(const Args &args) {
       case '$':
         for (int i = 0; i < get_settings_count(); i++) {
           print_setting_details(i, 5);
-          Serial.println(';');
+          Serial.print(F(";  // $"));
+          Serial.println(i);
         }
         return T_OK;
         break;

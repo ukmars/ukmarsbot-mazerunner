@@ -4,7 +4,7 @@
  * File Created: Friday, 23rd April 2021 9:09:16 am
  * Author: Peter Harrison
  * -----
- * Last Modified: Friday, 23rd April 2021 11:51:45 am
+ * Last Modified: Monday, 26th April 2021 10:42:44 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -38,7 +38,7 @@
 #define SPEEDMAX_EXPLORE 400
 #define SPEEDMAX_STRAIGHT 800
 #define SPEEDMAX_SMOOTH_TURN 500
-#define SPEEDMAX_SPIN_TURN 400
+#define SPEEDMAX_SPIN_TURN 200
 
 enum {
   FRESH_START,
@@ -48,8 +48,26 @@ enum {
   FINISHED
 };
 
+/// TODO: should the whole mouse object be persistent?
 class Mouse {
   public:
+  Mouse();
+  void init();
+  void report_status();
+  void update_sensors();
+  void set_heading(unsigned char new_heading);
+  void turn_to_face(unsigned char new_heading);
+  int search_to(unsigned char target);
+  void follow_to(unsigned char target);
+  void run_in_place_turns(int top_speed);
+  void run_smooth_turns(int top_speed);
+  void update_map();
+  int search_maze();
+  int run_maze();
+  bool make_path(unsigned char startCell);
+  void expand_path(char *pathString);
+  void print_path();
+
   unsigned char heading;
   unsigned char location;
   bool leftWall;
@@ -58,27 +76,11 @@ class Mouse {
   bool handStart;
 };
 
-extern char mouseState;
+extern char p_mouse_state;
 
-extern Mouse mouse;
 extern char path[];
 extern char commands[];
 
-void mouseInit();
-void mouseCheckWallSensors();
-void mouseTurnToFace(unsigned char newHeading);
-void mouseFollowTo(int target);
-int mouseSearchTo(int target);
-void mouseRunInplaceTurns(int topSpeed);
-void mouseRunSmoothTurns(int topSpeed);
-void mouseUpdateMapFromSensors();
-
-int mouseSearchMaze();
-int mouseRunMaze();
-
-bool pathGenerate(unsigned char startCell);
-void pathExpand(char *pathString);
-
-void print_path();
+extern Mouse dorothy;
 
 #endif //MOUSE_H

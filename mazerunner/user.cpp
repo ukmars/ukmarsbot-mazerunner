@@ -4,7 +4,7 @@
  * File Created: Wednesday, 24th March 2021 2:10:17 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Wednesday, 7th April 2021 4:02:59 pm
+ * Last Modified: Tuesday, 27th April 2021 12:10:50 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -32,8 +32,10 @@
 
 #include "user.h"
 #include "encoders.h"
+#include "maze.h"
 #include "motion.h"
 #include "motors.h"
+#include "mouse.h"
 #include "profile.h"
 #include "reports.h"
 #include "sensors.h"
@@ -62,6 +64,14 @@ void user_log_front_sensor() {
   disable_sensors();
 }
 
+void user_test_back_wall_start() {
+  reset_drive_system();
+  enable_motor_controllers();
+  forward.start(BACK_WALL_TO_CENTER, 100, 0, 500);
+  stop_motors();
+  disable_motor_controllers();
+}
+
 void run_mouse(int function) {
   switch (function) {
     case 0:
@@ -74,6 +84,7 @@ void run_mouse(int function) {
       break;
     case 2:
       // enter your function call here
+      dorothy.report_status();
       break;
     case 3:
       // enter your function call here
@@ -109,10 +120,11 @@ void run_mouse(int function) {
       // reserved
       break;
     case 14:
-      // reserved
+      user_test_back_wall_start();
       break;
     case 15:
-      user_follow_wall();
+      Serial.println("Follow TO");
+      dorothy.follow_to(maze_goal());
       break;
     default:
       disable_sensors();

@@ -4,7 +4,7 @@
  * File Created: Friday, 23rd April 2021 9:09:10 am
  * Author: Peter Harrison
  * -----
- * Last Modified: Friday, 23rd April 2021 12:53:49 pm
+ * Last Modified: Tuesday, 27th April 2021 12:10:47 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -41,100 +41,163 @@
 #include "sensors.h"
 #include "ui.h"
 
-Mouse mouse;
+Mouse dorothy;
 
 char path[128];
 char commands[128];
-char mouseState __attribute__((section(".noinit")));
+char p_mouse_state __attribute__((section(".noinit")));
 
-void mouseInit() {
-  mouse.handStart = false;
-  disable_steering();
-  mouse.location = 0;
-  mouse.heading = NORTH;
-  mouseState = SEARCHING;
-}
+static char dirLetters[] = "NESW";
+
+/**
+ * These convenience functions only perform the turn
+ */
 
 void turnIP180() {
   static int direction = 1;
   direction *= -1; // alternate direction each time it is called
   spin_turn(direction * 180, SPEEDMAX_SPIN_TURN, SPIN_TURN_ACCELERATION);
-  mouse.heading = (mouse.heading + 2) & 0x03;
 }
 
 void turnIP90R() {
   spin_turn(-90, SPEEDMAX_SPIN_TURN, SPIN_TURN_ACCELERATION);
-  mouse.heading = (mouse.heading + 1) & 0x03;
 }
 
 void turnIP90L() {
   spin_turn(90, SPEEDMAX_SPIN_TURN, SPIN_TURN_ACCELERATION);
-  mouse.heading = (mouse.heading + 3) & 0x03;
 }
 
 void turnSS90L() {
   turn(90, 200, 2000);
-  mouse.heading = (mouse.heading + 3) & 0x03;
 }
 
 void turnSS90R() {
   turn(-90, 200, 2000);
-  mouse.heading = (mouse.heading + 1) & 0x03;
 }
 
 void move_forward(float distance, float top_speed, float end_speed) {
   forward.start(distance, top_speed, end_speed, SEARCH_ACCELERATION);
 }
 
-void mouseCheckWallSensors() {
-  mouse.rightWall = (g_right_wall_present);
-  mouse.leftWall = (g_left_wall_present);
-  mouse.frontWall = (g_front_wall_present);
+//***************************************************************************//
+
+Mouse::Mouse() {
+  init();
+}
+
+void Mouse::init() {
+  handStart = false;
+  disable_steering();
+  location = 0;
+  heading = NORTH;
+  p_mouse_state = SEARCHING;
+}
+
+void Mouse::update_sensors() {
+  rightWall = (g_right_wall_present);
+  leftWall = (g_left_wall_present);
+  frontWall = (g_front_wall_present);
 }
 
 static void stopAndAdjust() {
-  stop_at(180);
-}
-
-void mouseFollowTo(int target) {
-  if (mouse.handStart) {
-    mouse.handStart = false;
-    forward.start(40, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
+  float remaining = 180 - forward.position();
+  disable_steering();
+  forward.start(remaining, forward.speed(), 0, forward.acceleration());
+  while (not forward.is_finished() && g_front_wall_sensor < 550) {
+    delay(2);
   }
-  while (mouse.location != target) {
-    enable_steering();
-    forward.start(40, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
-    wait_until_position(90);
-    mouse.location = neighbour(mouse.location, mouse.heading);
-    mouseCheckWallSensors();
-    mouseUpdateMapFromSensors();
-    if (mouse.location == target) {
-      stopAndAdjust();
-    } else if (!mouse.leftWall) {
-      stopAndAdjust();
-      turnIP90L();
-    } else if (!mouse.frontWall) {
-      wait_until_position(180);
-    } else if (!mouse.rightWall) {
-      stopAndAdjust();
-      turnIP90R();
-    } else {
-      stopAndAdjust();
-      turnIP180();
+  if (g_front_wall_present) {
+    while (g_front_wall_sensor > 620) {
+      forward.start(-10, 50, 0, 1000);
+      delay(2);
+    }
+
+    while (g_front_wall_sensor < 620) {
+      forward.start(10, 50, 0, 1000);
+      delay(2);
     }
   }
+
+  // stop_at(180);
+  // report_wall_sensors();
 }
 
-void mouseShowStatus() {
-  // if (mouse.location < 16) {
-  //   // debug << '0';
-  // }
-  // // debug << _HEX(mouse.location) << ':';
-  // // debug << dirLetters[mouse.heading] << ' ' << 'W' << '=';
-  // // debug << mouse.leftWall ? '1' : ' ' ;
-  // // debug << mouse.frontWall ? '1' : ' ' ;
-  // // debug << mouse.rightWall ? '1' : ' ' ;
-  // // debug << endl;
+void Mouse::follow_to(unsigned char target) {
+  handStart = true;
+  location = 0;
+  heading = NORTH;
+  initialise_maze(emptyMaze);
+  flood_maze(maze_goal());
+  wait_for_front_sensor();
+  reset_drive_system();
+  enable_motor_controllers();
+  forward.start(BACK_WALL_TO_CENTER, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
+  while (not forward.is_finished()) {
+    delay(2);
+  }
+  Serial.println(F("Off we go"));
+  // at the start of this loop we are always in a cell center and may be moving or stationary
+  while (location != target) {
+    if (button_pressed()) {
+      break;
+    }
+    enable_sensors();
+    forward.start(40, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
+    wait_until_position(40);
+    enable_steering();
+    wait_until_position(80);
+    location = neighbour(location, heading);
+    update_sensors();
+    update_map();
+    report_wall_sensors();
+    report_status();
+    if (location == target) {
+      stopAndAdjust();
+    } else if (!leftWall) {
+      stopAndAdjust();
+      Serial.println(F("IP90L"));
+      turnIP90L();
+      heading = (heading + 3) & 0x03;
+    } else if (!frontWall) {
+      Serial.println(F("FRWD "));
+      wait_until_position(180);
+    } else if (!rightWall) {
+      stopAndAdjust();
+      Serial.println(F("IP90R"));
+      turnIP90R();
+      heading = (heading + 1) & 0x03;
+    } else {
+      stopAndAdjust();
+      Serial.println(F("IP180"));
+      turnIP180();
+      heading = (heading + 2) & 0x03;
+    }
+  }
+  Serial.print(F("Arrived!  "));
+  report_status();
+  reset_drive_system();
+}
+
+void Mouse::report_status() {
+  print_hex_2(location);
+  Serial.print(':');
+  Serial.print(dirLetters[heading]);
+  if (leftWall) {
+    Serial.print('L');
+  } else {
+    Serial.print('-');
+  }
+  if (frontWall) {
+    Serial.print('F');
+  } else {
+    Serial.print('-');
+  }
+  if (rightWall) {
+    Serial.print('R');
+  } else {
+    Serial.print('-');
+  }
+  Serial.println();
 }
 
 /***
@@ -158,44 +221,44 @@ void mouseShowStatus() {
  * Returns  0  if the search is successful
  *         -1 if the maze has no route to the target.
  */
-int mouseSearchTo(int target) {
+int Mouse::search_to(unsigned char target) {
   flood_maze(target);
-  mouseShowStatus();
+  report_status();
   // // debug << F("  searching to: ") << target << endl;
-  if (cost[mouse.location] == MAX_COST) {
+  if (cost[location] == MAX_COST) {
     return -1;
   }
   unsigned char newHeading;
-  if (mouse.handStart) { // implies that the heading is correct
-    mouse.handStart = false;
+  if (handStart) { // implies that the heading is correct
+    handStart = false;
     // move to the cell centre
     forward.start(40, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
   } else {
-    newHeading = direction_to_smallest(mouse.location, mouse.heading);
-    mouseTurnToFace(newHeading);
+    newHeading = direction_to_smallest(location, heading);
+    turn_to_face(newHeading);
   }
-  while (mouse.location != target) {
+  while (location != target) {
     // here the mouse is always at the center of the cell and may be
     // stationary or moving
     enable_steering();
     forward.start(25, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
     wait_until_position(90);
     // now we are at the cell boundary
-    mouse.location = neighbour(mouse.location, mouse.heading);
-    mouseCheckWallSensors();
-    mouseShowStatus();
-    mouseUpdateMapFromSensors();
+    location = neighbour(location, heading);
+    update_sensors();
+    report_status();
+    update_map();
     flood_maze(target);
-    if (mouse.location == target) {
+    if (location == target) {
       stopAndAdjust();
       break;
     }
-    if (cost[mouse.location] == MAX_COST) { // are we walled in
+    if (cost[location] == MAX_COST) { // are we walled in
       stopAndAdjust();
       return -1;
     }
-    newHeading = direction_to_smallest(mouse.location, mouse.heading);
-    unsigned char hdgChange = (newHeading - mouse.heading) & 0x3;
+    newHeading = direction_to_smallest(location, heading);
+    unsigned char hdgChange = (newHeading - heading) & 0x3;
     switch (hdgChange) {
       case 0: // ahead
         wait_until_position(180);
@@ -203,14 +266,17 @@ int mouseSearchTo(int target) {
       case 1: // right
         stopAndAdjust();
         turnIP90R();
+        heading = (heading + 1) & 0x03;
         break;
       case 2: // behind
         stopAndAdjust();
         turnIP180();
+        heading = (heading + 2) & 0x03;
         break;
       case 3: // left
         stopAndAdjust();
         turnIP90L();
+        heading = (heading + 3) & 0x03;
         break;
     }
   }
@@ -223,8 +289,8 @@ int mouseSearchTo(int target) {
 // run-length encoding of straights is done on the fly.
 // turns are in-place so the mouse stops after each straight.
 //--------------------------------------------------------------------------
-void mouseRunInplaceTurns(int topSpeed) { //TODO
-  pathExpand(path);
+void Mouse::run_in_place_turns(int topSpeed) { //TODO
+  expand_path(path);
   // debug << path << endl;
   // debug << commands << endl;
   // "HRH": in place right
@@ -261,8 +327,8 @@ void mouseRunInplaceTurns(int topSpeed) { //TODO
     }
   }
   // assume we succeed
-  mouse.location = GOAL;
-  mouseShowStatus();
+  location = maze_goal();
+  report_status();
 }
 
 //--------------------------------------------------------------------------
@@ -273,8 +339,8 @@ void mouseRunInplaceTurns(int topSpeed) { //TODO
 // run-length encoding of straights is done on the fly.
 // turns are smooth and care is taken to deal with the path end.
 //--------------------------------------------------------------------------
-void mouseRunSmoothTurns(int topSpeed) {
-  pathExpand(path);
+void Mouse::run_smooth_turns(int topSpeed) {
+  expand_path(path);
   // "HRH": smooth right
   // "HLH": smooth left
   // "HH":  half a cell forward
@@ -314,16 +380,23 @@ void mouseRunSmoothTurns(int topSpeed) {
   }
   // debug << 'S' << endl;
   // assume we succeed
-  mouse.location = GOAL;
-  mouseShowStatus();
+  location = maze_goal();
+  report_status();
 }
 
+/**
+ * change the mouse heading but do not physically turn
+ */
+
+void Mouse::set_heading(unsigned char new_heading) {
+  heading = new_heading;
+}
 /***
  * inelegant but simple solution to the problem
  */
-void mouseTurnToFace(unsigned char newHeading) {
+void Mouse::turn_to_face(unsigned char newHeading) {
   // debug << dirLetters[mouse.heading] << '>' << dirLetters[newHeading] << endl;
-  switch (mouse.heading) {
+  switch (heading) {
     case NORTH:
       if (newHeading == EAST) {
         turnIP90R();
@@ -361,59 +434,60 @@ void mouseTurnToFace(unsigned char newHeading) {
       }
       break;
   }
+  heading = newHeading;
 }
 
-void mouseUpdateMapFromSensors() {
-  switch (mouse.heading) {
+void Mouse::update_map() {
+  switch (heading) {
     case NORTH:
-      if (mouse.frontWall) {
-        set_wall_present(mouse.location, NORTH);
+      if (frontWall) {
+        set_wall_present(location, NORTH);
       }
-      if (mouse.rightWall) {
-        set_wall_present(mouse.location, EAST);
+      if (rightWall) {
+        set_wall_present(location, EAST);
       }
-      if (mouse.leftWall) {
-        set_wall_present(mouse.location, WEST);
+      if (leftWall) {
+        set_wall_present(location, WEST);
       }
       break;
     case EAST:
-      if (mouse.frontWall) {
-        set_wall_present(mouse.location, EAST);
+      if (frontWall) {
+        set_wall_present(location, EAST);
       }
-      if (mouse.rightWall) {
-        set_wall_present(mouse.location, SOUTH);
+      if (rightWall) {
+        set_wall_present(location, SOUTH);
       }
-      if (mouse.leftWall) {
-        set_wall_present(mouse.location, NORTH);
+      if (leftWall) {
+        set_wall_present(location, NORTH);
       }
       break;
     case SOUTH:
-      if (mouse.frontWall) {
-        set_wall_present(mouse.location, SOUTH);
+      if (frontWall) {
+        set_wall_present(location, SOUTH);
       }
-      if (mouse.rightWall) {
-        set_wall_present(mouse.location, WEST);
+      if (rightWall) {
+        set_wall_present(location, WEST);
       }
-      if (mouse.leftWall) {
-        set_wall_present(mouse.location, EAST);
+      if (leftWall) {
+        set_wall_present(location, EAST);
       }
       break;
     case WEST:
-      if (mouse.frontWall) {
-        set_wall_present(mouse.location, WEST);
+      if (frontWall) {
+        set_wall_present(location, WEST);
       }
-      if (mouse.rightWall) {
-        set_wall_present(mouse.location, NORTH);
+      if (rightWall) {
+        set_wall_present(location, NORTH);
       }
-      if (mouse.leftWall) {
-        set_wall_present(mouse.location, SOUTH);
+      if (leftWall) {
+        set_wall_present(location, SOUTH);
       }
       break;
     default:
       // This is an error. We should handle it.
       break;
   }
-  walls[mouse.location] |= VISITED;
+  walls[location] |= VISITED;
 }
 
 /***
@@ -435,19 +509,19 @@ void mouseUpdateMapFromSensors() {
  * The walls can be saved to EEPROM after each pass. It left to the
  * reader as an exercise to do something useful with that.
  */
-int mouseSearchMaze() {
+int Mouse::search_maze() {
   wait_for_front_sensor();
   //                                             motorsEnable();
-  mouse.location = 0;
-  mouse.heading = NORTH;
-  int result = mouseSearchTo(GOAL);
+  location = 0;
+  heading = NORTH;
+  int result = search_to(maze_goal());
   if (result != 0) {
     panic(1);
   }
   //  EEPROM.put(0, walls);
   // digitalWrite(RED_LED, 1);
   delay(200);
-  result = mouseSearchTo(0);
+  result = search_to(0);
   stop_motors();
   if (result != 0) {
     panic(1);
@@ -461,7 +535,7 @@ int mouseSearchMaze() {
  * Search the maze until there is a solution then make a path and run it
  * First with in-place turns, then with smooth turns;
  *
- * The mouse can be placed into any of the possible stated before
+ * The mouse can be placed into any of the possible states before
  * calling this function so that individual actions can be tested.
  *
  * If you do not want to search exhaustively then do a single search
@@ -469,46 +543,44 @@ int mouseSearchMaze() {
  * are unvisited. Now any path generated will succeed even if it is
  * not optimal.
  */
-int mouseRunMaze() {
+int Mouse::run_maze() {
   // motorsEnable();
-  if (mouseState == SEARCHING) {
+  if (p_mouse_state == SEARCHING) {
     wait_for_front_sensor();
-    mouse.handStart = true;
+    handStart = true;
     enable_steering();
-    mouse.location = 0;
-    mouse.heading = NORTH;
-    mouseSearchTo(GOAL);
-    mouseSearchTo(0);
-    mouseTurnToFace(NORTH);
+    location = 0;
+    heading = NORTH;
+    search_to(maze_goal());
+    search_to(START);
+    turn_to_face(NORTH);
     delay(200);
-    mouseState = INPLACE_RUN;
+    p_mouse_state = INPLACE_RUN;
   }
-  if (mouseState == INPLACE_RUN) {
-    flood_maze(GOAL);
-    pathGenerate(0);
-    // debug << F("Maze is searched\nwaiting inplace for start\n");
+  if (p_mouse_state == INPLACE_RUN) {
+    flood_maze(maze_goal());
+    make_path(location);
     wait_for_front_sensor();
     Serial.println(F("Running in place"));
-    mouseRunInplaceTurns(SPEEDMAX_STRAIGHT);
+    run_in_place_turns(SPEEDMAX_STRAIGHT);
     Serial.println(F("Returning"));
-    mouseSearchTo(0);
+    search_to(START);
     Serial.println(F("Done"));
-    mouseState = SMOOTH_RUN;
+    p_mouse_state = SMOOTH_RUN;
   }
-  if (mouseState == SMOOTH_RUN) {
+  if (p_mouse_state == SMOOTH_RUN) {
     // now try with smooth turns;
-    flood_maze(GOAL);
-    pathGenerate(0);
-    mouseTurnToFace(direction_to_smallest(mouse.location, mouse.heading));
+    flood_maze(maze_goal());
+    make_path(location);
+    turn_to_face(direction_to_smallest(location, heading));
     delay(200);
-    // debug << F("waiting for smooth run start\n");
     wait_for_front_sensor();
     Serial.println(F("Running smooth"));
-    mouseRunSmoothTurns(SPEEDMAX_STRAIGHT);
+    run_smooth_turns(SPEEDMAX_STRAIGHT);
     Serial.println(F("Returning"));
-    mouseSearchTo(0);
+    search_to(START);
     Serial.println(F("Finished"));
-    mouseState = FINISHED;
+    p_mouse_state = FINISHED;
   }
   stop_motors();
   return 0;
@@ -568,7 +640,7 @@ int mouseRunMaze() {
  *
  */
 
-bool pathGenerate(unsigned char startCell) {
+bool Mouse::make_path(unsigned char startCell = START) {
   bool solved = true;
   ;
   unsigned char cell = startCell;
@@ -695,7 +767,7 @@ bool pathGenerate(unsigned char startCell) {
  *
 
  */
-void pathExpand(char *pathString) {
+void Mouse::expand_path(char *pathString) {
   int pathIndex = 0;
   int commandIndex = 0;
   commands[commandIndex++] = 'B';
@@ -734,7 +806,7 @@ void pathExpand(char *pathString) {
   commands[commandIndex] = '\0';
 }
 
-void print_path() {
+void Mouse::print_path() {
   for (int i = 0; i < 128 && path[i]; i++) {
     Serial.print(path[i]);
   }
