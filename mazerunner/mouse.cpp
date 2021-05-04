@@ -165,21 +165,27 @@ void Mouse::end_run() {
  */
 void Mouse::turn_SS90ER() {
 
-  float run_in = 20.0;  // mm
-  float run_out = 15.0; // mm
+  float run_in = 5.0;   // mm
+  float run_out = 10.0; // mm
   float angle = -90.0;  // deg
   float omega = 280;    // deg/s
   float alpha = 4000;   // deg/s/s
+  bool triggered = false;
   disable_steering();
   float distance = 190.0 + run_in - forward.position();
   forward.start(distance, forward.speed(), DEFAULT_TURN_SPEED, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
     delay(2);
-    if (g_front_wall_sensor > 64) {
+    if (g_front_wall_sensor > 54) {
       forward.set_state(CS_FINISHED);
+      triggered = true;
     }
   }
-  log_status('R');
+  if (triggered) {
+    log_status('R');
+  } else {
+    log_status('r');
+  }
   rotation.start(angle, omega, 0, alpha);
   while (not rotation.is_finished()) {
     delay(2);
@@ -192,21 +198,27 @@ void Mouse::turn_SS90ER() {
 }
 
 void Mouse::turn_SS90EL() {
-  float run_in = 20.0;  // mm
-  float run_out = 15.0; // mm
+  float run_in = 5.0;   // mm
+  float run_out = 10.0; // mm
   float angle = 90.0;   // deg
   float omega = 280;    // deg/s
   float alpha = 4000;   // deg/s/s
+  bool triggered = false;
   disable_steering();
   float distance = 190.0 + run_in - forward.position();
   forward.start(distance, forward.speed(), DEFAULT_TURN_SPEED, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
     delay(2);
-    if (g_front_wall_sensor > 64) {
+    if (g_front_wall_sensor > 54) {
       forward.set_state(CS_FINISHED);
+      triggered = true;
     }
   }
-  log_status('L');
+  if (triggered) {
+    log_status('L');
+  } else {
+    log_status('l');
+  }
   rotation.start(angle, omega, 0, alpha);
   while (not rotation.is_finished()) {
     delay(2);
