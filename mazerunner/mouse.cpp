@@ -245,11 +245,6 @@ void Mouse::turn_around() {
       delay(2);
     }
   }
-  Serial.print(' ');
-  Serial.print(get_front_sensor());
-  Serial.print('@');
-  Serial.print(forward.position());
-  Serial.print(' ');
   // Be sure robot has come to a halt.
   forward.stop();
   spin_turn(-180, SPEEDMAX_SPIN_TURN, SPIN_TURN_ACCELERATION);
