@@ -4,7 +4,7 @@
  * File Created: Monday, 29th March 2021 11:04:59 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Wednesday, 14th April 2021 1:12:15 pm
+ * Last Modified: Thursday, 29th April 2021 9:44:34 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -36,9 +36,9 @@
 #include <arduino.h>
 
 // force rewrite of EEPROM settings. Set this when developing
-#define ALWAYS_USE_DEFAULT_SETTINGS 1
+#define ALWAYS_USE_DEFAULT_SETTINGS 0
 //***************************************************************************//
-const bool USER_MODE = false;
+const bool USER_MODE = true;
 
 //***************************************************************************//
 // We need to know about the drive mechanics.
@@ -128,7 +128,7 @@ const int RIGHT_THRESHOLD = 40; // minimum value to register a wall
 // Some physical constants that are likely to be board -specific
 
 // with robot against back wall, how much travel is there to the cell center?
-const int BACK_WALL_TO_CENTER = 47;
+const int BACK_WALL_TO_CENTER = 48;
 
 //***************************************************************************//
 
@@ -138,14 +138,14 @@ const float LOOP_INTERVAL = (1.0 / LOOP_FREQUENCY);
 
 //***************************************************************************//
 // change the revision if the settings structure changes to force rewrte of EEPROM
-const int SETTINGS_REVISION = 10319;
+const int SETTINGS_REVISION = 10429;
 const uint32_t BAUDRATE = 115200;
 const int DEFAULT_DECIMAL_PLACES = 5;
 const int EEPROM_ADDR_SETTINGS = 0x0000;
 
 //***************************************************************************//
 // set this to zero to disable profile data logging over serial
-#define DEBUG_LOGGING 1
+#define DEBUG_LOGGING 0
 // time between logged lined when reporting is enabled (milliseconds)
 const int REPORTING_INTERVAL = 10;
 

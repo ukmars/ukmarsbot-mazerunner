@@ -34,6 +34,7 @@
 #include "encoders.h"
 #include "motion.h"
 #include "motors.h"
+#include "mouse.h"
 #include "profile.h"
 #include "reports.h"
 #include "sensors.h"
