@@ -4,7 +4,7 @@
  * File Created: Friday, 23rd April 2021 9:09:10 am
  * Author: Peter Harrison
  * -----
- * Last Modified: Friday, 30th April 2021 10:58:06 am
+ * Last Modified: Friday, 30th April 2021 11:04:37 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -125,11 +125,53 @@ void move_forward(float distance, float top_speed, float end_speed) {
 void turnSS90ER() {
   stopAndAdjust();
   turnIP90R();
+  /*
+    float run_in = 20.0;       // mm
+  float run_out = 20.0;      // mm
+  float turn_speed = 300;    // mm/s
+  float acceleration = 2000; // mm/s/s
+  float angle = -90.0;       // deg
+  float omega = 280;         // deg/s
+  float alpha = 2000;        // deg/s/s
+  forward.start(run_in, turn_speed, turn_speed, acceleration);
+  while (not forward.is_finished()) {
+    report_profile();
+  }
+  rotation.start(angle, omega, 0, alpha);
+  while (not rotation.is_finished()) {
+    report_profile();
+  }
+  forward.start(run_out, turn_speed, turn_speed, acceleration);
+  while (not forward.is_finished()) {
+    report_profile();
+  }
+  */
 }
 
 void turnSS90EL() {
   stopAndAdjust();
   turnIP90L();
+  /*
+    float run_in = 20.0;       // mm
+  float run_out = 20.0;      // mm
+  float turn_speed = 300;    // mm/s
+  float acceleration = 2000; // mm/s/s
+  float angle = 90.0;        // deg
+  float omega = 280;         // deg/s
+  float alpha = 2000;        // deg/s/s
+  forward.start(run_in, turn_speed, turn_speed, acceleration);
+  while (not forward.is_finished()) {
+    report_profile();
+  }
+  rotation.start(angle, omega, 0, alpha);
+  while (not rotation.is_finished()) {
+    report_profile();
+  }
+  forward.start(run_out, turn_speed, turn_speed, acceleration);
+  while (not forward.is_finished()) {
+    report_profile();
+  }
+  */
 }
 
 //***************************************************************************//
@@ -184,17 +226,13 @@ void Mouse::follow_to(unsigned char target) {
     if (location == target) {
       stopAndAdjust();
     } else if (!leftWall) {
-      stopAndAdjust();
-      Serial.println(F("IP90L"));
-      turnIP90L();
+      turn_SS90EL();
       heading = (heading + 3) & 0x03;
     } else if (!frontWall) {
       Serial.println(F("FRWD "));
       wait_until_position(180);
     } else if (!rightWall) {
-      stopAndAdjust();
-      Serial.println(F("IP90R"));
-      turnIP90R();
+      turnSS90ER();
       heading = (heading + 1) & 0x03;
     } else {
       stopAndAdjust();
@@ -267,6 +305,7 @@ int Mouse::search_to(unsigned char target) {
     newHeading = direction_to_smallest(location, heading);
     turn_to_face(newHeading);
   }
+  // TODO. the robot needs to start each iteration at the sensing point
   while (location != target) {
     // here the mouse is always at the center of the cell and may be
     // stationary or moving
