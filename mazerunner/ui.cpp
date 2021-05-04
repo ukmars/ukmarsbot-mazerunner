@@ -291,6 +291,10 @@ void cli_interpret(const Args &args) {
       case 'W':
         print_maze_plain();
         break;
+      case 'X':
+        Serial.println(F("Reset Maze"));
+        initialise_maze(emptyMaze);
+        break;
       case 'R':
         print_maze_with_directions();
         break;
