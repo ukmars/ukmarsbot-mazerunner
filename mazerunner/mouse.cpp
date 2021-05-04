@@ -302,7 +302,8 @@ void Mouse::follow_to(unsigned char target) {
   heading = NORTH;
   initialise_maze(emptyMaze);
   flood_maze(maze_goal());
-  wait_for_front_sensor();
+  // wait_for_front_sensor();
+  delay(1000);
   enable_sensors();
   reset_drive_system();
   enable_motor_controllers();
