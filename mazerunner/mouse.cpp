@@ -4,7 +4,7 @@
  * File Created: Friday, 23rd April 2021 9:09:10 am
  * Author: Peter Harrison
  * -----
- * Last Modified: Tuesday, 27th April 2021 12:10:47 am
+ * Last Modified: Friday, 30th April 2021 10:58:06 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -49,6 +49,34 @@ char p_mouse_state __attribute__((section(".noinit")));
 
 static char dirLetters[] = "NESW";
 
+//***************************************************************************//
+/**
+ * Used to bring the mouse to a halt, centered in a cell.
+ *
+ * If there is a wall ahead, it will use that for a reference to make sure it
+ * is well positioned.
+ *
+ * TODO: need a function just to adjust forward position
+ */
+static void stopAndAdjust() {
+  float remaining = 180 - forward.position();
+  disable_steering();
+  forward.start(remaining, forward.speed(), 0, forward.acceleration());
+  while (not forward.is_finished() && g_front_wall_sensor < 550) {
+    delay(2);
+  }
+  if (g_front_wall_present) {
+    while (g_front_wall_sensor > 620) {
+      forward.start(-10, 50, 0, 1000);
+      delay(2);
+    }
+
+    while (g_front_wall_sensor < 620) {
+      forward.start(10, 50, 0, 1000);
+      delay(2);
+    }
+  }
+}
 /**
  * These convenience functions only perform the turn
  */
@@ -81,6 +109,31 @@ void move_forward(float distance, float top_speed, float end_speed) {
 
 //***************************************************************************//
 
+/** Search turns
+ *
+ * These turns assume that the robot is crossing the cell boundary but is still
+ * short of the 20mm start position of the turn.
+ *
+ * The turn will be a smooth, coordinated turn that should finish 10mm short of
+ * the next cell boundary.
+ *
+ * Does NOT update the mouse heading but it should
+ *
+ * TODO: make these Mouse methods.
+ *
+ */
+void turnSS90ER() {
+  stopAndAdjust();
+  turnIP90R();
+}
+
+void turnSS90EL() {
+  stopAndAdjust();
+  turnIP90L();
+}
+
+//***************************************************************************//
+
 Mouse::Mouse() {
   init();
 }
@@ -97,29 +150,6 @@ void Mouse::update_sensors() {
   rightWall = (g_right_wall_present);
   leftWall = (g_left_wall_present);
   frontWall = (g_front_wall_present);
-}
-
-static void stopAndAdjust() {
-  float remaining = 180 - forward.position();
-  disable_steering();
-  forward.start(remaining, forward.speed(), 0, forward.acceleration());
-  while (not forward.is_finished() && g_front_wall_sensor < 550) {
-    delay(2);
-  }
-  if (g_front_wall_present) {
-    while (g_front_wall_sensor > 620) {
-      forward.start(-10, 50, 0, 1000);
-      delay(2);
-    }
-
-    while (g_front_wall_sensor < 620) {
-      forward.start(10, 50, 0, 1000);
-      delay(2);
-    }
-  }
-
-  // stop_at(180);
-  // report_wall_sensors();
 }
 
 void Mouse::follow_to(unsigned char target) {
@@ -264,8 +294,7 @@ int Mouse::search_to(unsigned char target) {
         wait_until_position(180);
         break;
       case 1: // right
-        stopAndAdjust();
-        turnIP90R();
+        turnSS90ER();
         heading = (heading + 1) & 0x03;
         break;
       case 2: // behind
@@ -274,8 +303,7 @@ int Mouse::search_to(unsigned char target) {
         heading = (heading + 2) & 0x03;
         break;
       case 3: // left
-        stopAndAdjust();
-        turnIP90L();
+        turnSS90EL();
         heading = (heading + 3) & 0x03;
         break;
     }
