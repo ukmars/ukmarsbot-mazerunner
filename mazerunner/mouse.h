@@ -60,6 +60,7 @@ class Mouse {
   void turn_to_face(unsigned char new_heading);
   void turn_SS90EL();
   void turn_SS90ER();
+  void turn_around();
   int search_to(unsigned char target);
   void follow_to(unsigned char target);
   void run_in_place_turns(int top_speed);

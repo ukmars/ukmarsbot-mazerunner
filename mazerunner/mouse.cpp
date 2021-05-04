@@ -168,7 +168,6 @@ void Mouse::turn_SS90ER() {
 }
 
 void Mouse::turn_SS90EL() {
-
   float run_in = 20.0;  // mm
   float run_out = 15.0; // mm
   float angle = 90.0;   // deg
@@ -189,6 +188,34 @@ void Mouse::turn_SS90EL() {
     delay(2);
   }
   forward.start(run_out, forward.speed(), DEFAULT_SEARCH_SPEED, SEARCH_ACCELERATION);
+  while (not forward.is_finished()) {
+    delay(2);
+  }
+  forward.set_position(170);
+}
+
+void Mouse::turn_around() {
+  bool has_wall = frontWall;
+  disable_steering();
+  log_status('A');
+  float remaining = 270 - forward.position();
+  forward.start(remaining, forward.speed(), 0, forward.acceleration());
+  while (not forward.is_finished()) {
+    delay(2);
+    if (g_front_wall_sensor > 550) {
+      forward.finish();
+    }
+  }
+  if (has_wall) {
+    forward.start(10, 50, 50, SEARCH_ACCELERATION);
+    while (g_front_wall_sensor < 620) {
+      delay(2);
+    }
+  }
+ // Be sure robot has come to a halt.
+  forward.stop();
+  spin_turn(180, SPEEDMAX_SPIN_TURN, SPIN_TURN_ACCELERATION);
+  forward.start(80, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
     delay(2);
   }
@@ -284,14 +311,8 @@ void Mouse::follow_to(unsigned char target) {
       log_status('x');
     } else {
       log_status('A');
-      stopAndAdjust();
-      turnIP180();
+      turn_around();
       heading = (heading + 2) & 0x03;
-      forward.start(80, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
-      while (not forward.is_finished()) {
-        delay(2);
-      }
-      forward.set_position(170);
       log_status('x');
     }
   }
