@@ -104,17 +104,32 @@ void run_mouse(int function) {
     case 8:
       // enter your function call here
       break;
-    case 9:
-      // enter your function call here
-      break;
+    case 9: {
+      reset_drive_system();
+      enable_motor_controllers();
+      report_profile_header();
+      forward.start(180, 180, 30, 1000);
+      while (not forward.is_finished()) {
+        report_profile();
+      }
+      forward.stop();
+      Serial.println();
+      uint32_t t = millis() + 200;
+      while (millis() < t) {
+        report_profile();
+      }
+      reset_drive_system();
+    } break;
     case 10:
       // enter your function call here
       break;
     case 11:
       // reserved
+      test_spin_turn(90);
       break;
     case 12:
       // reserved
+      test_spin_turn(-90);
       break;
     case 13:
       // reserved
