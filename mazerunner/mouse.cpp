@@ -4,7 +4,7 @@
  * File Created: Friday, 23rd April 2021 9:09:10 am
  * Author: Peter Harrison
  * -----
- * Last Modified: Friday, 30th April 2021 11:04:37 am
+ * Last Modified: Friday, 30th April 2021 11:10:16 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -87,11 +87,11 @@ void turnIP180() {
   spin_turn(direction * 180, SPEEDMAX_SPIN_TURN, SPIN_TURN_ACCELERATION);
 }
 
-void turnIP90R() {
+void turn_IP90R() {
   spin_turn(-90, SPEEDMAX_SPIN_TURN, SPIN_TURN_ACCELERATION);
 }
 
-void turnIP90L() {
+void turn_IP90L() {
   spin_turn(90, SPEEDMAX_SPIN_TURN, SPIN_TURN_ACCELERATION);
 }
 
@@ -112,7 +112,7 @@ void move_forward(float distance, float top_speed, float end_speed) {
 /** Search turns
  *
  * These turns assume that the robot is crossing the cell boundary but is still
- * short of the 20mm start position of the turn.
+ * short of the start position of the turn.
  *
  * The turn will be a smooth, coordinated turn that should finish 10mm short of
  * the next cell boundary.
@@ -122,9 +122,9 @@ void move_forward(float distance, float top_speed, float end_speed) {
  * TODO: make these Mouse methods.
  *
  */
-void turnSS90ER() {
+void turn_SS90ER() {
   stopAndAdjust();
-  turnIP90R();
+  turn_IP90R();
   /*
     float run_in = 20.0;       // mm
   float run_out = 20.0;      // mm
@@ -148,9 +148,9 @@ void turnSS90ER() {
   */
 }
 
-void turnSS90EL() {
+void turn_SS90EL() {
   stopAndAdjust();
-  turnIP90L();
+  turn_IP90L();
   /*
     float run_in = 20.0;       // mm
   float run_out = 20.0;      // mm
@@ -232,7 +232,7 @@ void Mouse::follow_to(unsigned char target) {
       Serial.println(F("FRWD "));
       wait_until_position(180);
     } else if (!rightWall) {
-      turnSS90ER();
+      turn_SS90ER();
       heading = (heading + 1) & 0x03;
     } else {
       stopAndAdjust();
@@ -333,7 +333,7 @@ int Mouse::search_to(unsigned char target) {
         wait_until_position(180);
         break;
       case 1: // right
-        turnSS90ER();
+        turn_SS90ER();
         heading = (heading + 1) & 0x03;
         break;
       case 2: // behind
@@ -342,7 +342,7 @@ int Mouse::search_to(unsigned char target) {
         heading = (heading + 2) & 0x03;
         break;
       case 3: // left
-        turnSS90EL();
+        turn_SS90EL();
         heading = (heading + 3) & 0x03;
         break;
     }
@@ -374,12 +374,12 @@ void Mouse::run_in_place_turns(int topSpeed) { //TODO
     } else if (commands[index] == 'H' && commands[index + 1] == 'R' && commands[index + 2] == 'H') {
 
       move_forward(90, topSpeed, 0);
-      turnIP90R();
+      turn_IP90R();
       move_forward(90, topSpeed, topSpeed);
       index += 3;
     } else if (commands[index] == 'H' && commands[index + 1] == 'L' && commands[index + 2] == 'H') {
       move_forward(90, topSpeed, 0);
-      turnIP90L();
+      turn_IP90L();
       move_forward(90, topSpeed, topSpeed);
       index += 3;
     } else if (commands[index] == 'H' && commands[index + 1] == 'H') {
@@ -466,38 +466,38 @@ void Mouse::turn_to_face(unsigned char newHeading) {
   switch (heading) {
     case NORTH:
       if (newHeading == EAST) {
-        turnIP90R();
+        turn_IP90R();
       } else if (newHeading == SOUTH) {
         turnIP180();
       } else if (newHeading == WEST) {
-        turnIP90L();
+        turn_IP90L();
       }
       break;
     case EAST:
       if (newHeading == SOUTH) {
-        turnIP90R();
+        turn_IP90R();
       } else if (newHeading == WEST) {
         turnIP180();
       } else if (newHeading == NORTH) {
-        turnIP90L();
+        turn_IP90L();
       }
       break;
     case SOUTH:
       if (newHeading == WEST) {
-        turnIP90R();
+        turn_IP90R();
       } else if (newHeading == NORTH) {
         turnIP180();
       } else if (newHeading == EAST) {
-        turnIP90L();
+        turn_IP90L();
       }
       break;
     case WEST:
       if (newHeading == NORTH) {
-        turnIP90R();
+        turn_IP90R();
       } else if (newHeading == EAST) {
         turnIP180();
       } else if (newHeading == SOUTH) {
-        turnIP90L();
+        turn_IP90L();
       }
       break;
   }
