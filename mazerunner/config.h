@@ -4,7 +4,7 @@
  * File Created: Monday, 29th March 2021 11:04:59 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Thursday, 29th April 2021 9:44:34 am
+ * Last Modified: Thursday, 6th May 2021 9:17:32 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -119,10 +119,10 @@ const float LEFT_SCALE = (float)LEFT_NOMINAL / LEFT_CALIBRATION;
 const float RIGHT_SCALE = (float)RIGHT_NOMINAL / RIGHT_CALIBRATION;
 
 // the values above which, a wall is seen
-const int LEFT_THRESHOLD = 40;  // minimum value to register a wall
-const int FRONT_THRESHOLD = 20; // minimum value to register a wall
-const int RIGHT_THRESHOLD = 40; // minimum value to register a wall
-
+const int LEFT_THRESHOLD = 40;   // minimum value to register a wall
+const int FRONT_THRESHOLD = 20;  // minimum value to register a wall
+const int RIGHT_THRESHOLD = 40;  // minimum value to register a wall
+const int FRONT_REFERENCE = 850; // reading when mouse centered with wall ahead
 //***************************************************************************//
 //***************************************************************************//
 // Some physical constants that are likely to be board -specific

@@ -4,7 +4,7 @@
  * File Created: Friday, 23rd April 2021 9:09:10 am
  * Author: Peter Harrison
  * -----
- * Last Modified: Friday, 30th April 2021 11:12:33 am
+ * Last Modified: Thursday, 6th May 2021 9:20:34 am
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -68,10 +68,12 @@ void print_walls() {
 }
 //***************************************************************************//
 /**
- * Used to bring the mouse to a halt, centered in a cell.
+ * Used to bring the mouse to a halt, centred in a cell.
  *
  * If there is a wall ahead, it will use that for a reference to make sure it
  * is well positioned.
+ *
+ * TODO: the critical values are robot-dependent.
  *
  * TODO: need a function just to adjust forward position
  */
@@ -79,21 +81,20 @@ static void stopAndAdjust() {
   float remaining = 270 - forward.position();
   disable_steering();
   forward.start(remaining, forward.speed(), 0, forward.acceleration());
-  while (not forward.is_finished() && g_front_wall_sensor < 550) {
+  while (not forward.is_finished()) {
+    if (g_front_wall_sensor > (FRONT_REFERENCE - 150)) {
+      break;
+    }
     delay(2);
   }
   if (g_front_wall_present) {
-    while (g_front_wall_sensor > 620) {
-      forward.start(-10, 50, 0, 1000);
-      delay(2);
-    }
-
-    while (g_front_wall_sensor < 620) {
+    while (g_front_wall_sensor < FRONT_REFERENCE) {
       forward.start(10, 50, 0, 1000);
       delay(2);
     }
   }
 }
+
 /**
  * These convenience functions only perform the turn
  */
@@ -232,15 +233,15 @@ void Mouse::turn_SS90EL() {
 
 /**
  * As with all the search turns, this command will be called after the robot has
- * reached the search decision point and decided its next move. It is not known 
+ * reached the search decision point and decided its next move. It is not known
  * how long that takes or what the exact position will be.
- * 
+ *
  * Turning around is always going to be an in-place operation so it is important
- * that the robot is stationary and as well centered as possible.
- * 
- * It only takes 27mm of travel to come to a halt from normal search speed. 
- * 
- * 
+ * that the robot is stationary and as well centred as possible.
+ *
+ * It only takes 27mm of travel to come to a halt from normal search speed.
+ *
+ *
  */
 void Mouse::turn_around() {
   bool has_wall = frontWall;
@@ -249,7 +250,7 @@ void Mouse::turn_around() {
   float remaining = 270 - forward.position();
   forward.start(remaining, forward.speed(), 30, forward.acceleration());
   if (has_wall) {
-    while (get_front_sensor() < 850) {
+    while (get_front_sensor() < FRONT_REFERENCE) {
       delay(2);
     }
   } else {
@@ -557,7 +558,7 @@ void Mouse::run_in_place_turns(int topSpeed) { //TODO
 //--------------------------------------------------------------------------
 // Assume the maze is flooded and that a path string already exists.
 // Convert that to half-cell straights for easier processing
-// next, convert all HRH and HLH occurences to the corresponding smooth turns
+// next, convert all HRH and HLH occurrences to the corresponding smooth turns
 // then run the mouse along the path.
 // run-length encoding of straights is done on the fly.
 // turns are smooth and care is taken to deal with the path end.
@@ -614,6 +615,7 @@ void Mouse::run_smooth_turns(int topSpeed) {
 void Mouse::set_heading(unsigned char new_heading) {
   heading = new_heading;
 }
+
 /***
  * inelegant but simple solution to the problem
  */
