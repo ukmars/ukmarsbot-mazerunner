@@ -4,7 +4,7 @@
  * File Created: Wednesday, 24th March 2021 2:10:17 pm
  * Author: Peter Harrison
  * -----
- * Last Modified: Tuesday, 27th April 2021 12:10:50 am
+ * Last Modified: Thursday, 6th May 2021 12:00:14 pm
  * Modified By: Peter Harrison
  * -----
  * MIT License
@@ -233,11 +233,11 @@ void run_mouse(int function) {
     case 14:
       Serial.println("Search TO");
       dorothy.handStart = true;
-      dorothy.location = 0;
+      dorothy.location = START;
       dorothy.heading = NORTH;
       dorothy.search_to(maze_goal());
       dorothy.handStart = false;
-      dorothy.search_to(0);
+      dorothy.search_to(START);
       dorothy.search_to(maze_goal());
 
       break;
