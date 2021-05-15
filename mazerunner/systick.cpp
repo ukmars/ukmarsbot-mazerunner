@@ -59,6 +59,20 @@ void setup_systick() {
  *
  * The last thing it does is to start the sensor reads so that they
  * will be ready to use next time around.
+ * 
+ * Timing tests indicate that, with the robot at rest, the systick ISR
+ * consumes about 10% of the available system bandwidth.
+ * 
+ * With just a single profile active and moving, that increases to nearly 30%.
+ * Two such active profiles increases it to about 35-40%.
+ * 
+ * The reasin that two prifiles does not take up twice as much time is that
+ * an active profile has a processing overhead even if there is no motion.
+ * 
+ * Most of the load is due to that overhead. While the profile generates actual 
+ * motion, there is an additional load.
+ * 
+ * 
  */
 ISR(TIMER2_COMPA_vect, ISR_NOBLOCK) {
   // TODO: make sure all variables are interrupt-safe if they are used outside IRQs
