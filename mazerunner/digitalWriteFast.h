@@ -247,15 +247,12 @@
 #define SPI_HW_MISO_PIN (14) //PB3
 #define SPI_HW_SCK_PIN (15)  //PB1
 
-#define __digitalPinToPortReg(P)                                                                                                                                               \
-  ((((P) >= 0 && (P) <= 4) || (P) == 6 || (P) == 12 || (P) == 24 || (P) == 25 || (P) == 29) ? &PORTD : (((P) == 5 || (P) == 13) ? &PORTC : (((P) >= 18 && (P) <= 23)) ? &PORTF \
-                                                                                                                                                                      : (((P) == 7) ? &PORTE : &PORTB)))
-#define __digitalPinToDDRReg(P)                                                                                                                                             \
-  ((((P) >= 0 && (P) <= 4) || (P) == 6 || (P) == 12 || (P) == 24 || (P) == 25 || (P) == 29) ? &DDRD : (((P) == 5 || (P) == 13) ? &DDRC : (((P) >= 18 && (P) <= 23)) ? &DDRF \
-                                                                                                                                                                    : (((P) == 7) ? &DDRE : &DDRB)))
-#define __digitalPinToPINReg(P)                                                                                                                                             \
-  ((((P) >= 0 && (P) <= 4) || (P) == 6 || (P) == 12 || (P) == 24 || (P) == 25 || (P) == 29) ? &PIND : (((P) == 5 || (P) == 13) ? &PINC : (((P) >= 18 && (P) <= 23)) ? &PINF \
-                                                                                                                                                                    : (((P) == 7) ? &PINE : &PINB)))
+#define __digitalPinToPortReg(P) \
+  ((((P) >= 0 && (P) <= 4) || (P) == 6 || (P) == 12 || (P) == 24 || (P) == 25 || (P) == 29) ? &PORTD : (((P) == 5 || (P) == 13) ? &PORTC : (((P) >= 18 && (P) <= 23)) ? &PORTF : (((P) == 7) ? &PORTE : &PORTB)))
+#define __digitalPinToDDRReg(P) \
+  ((((P) >= 0 && (P) <= 4) || (P) == 6 || (P) == 12 || (P) == 24 || (P) == 25 || (P) == 29) ? &DDRD : (((P) == 5 || (P) == 13) ? &DDRC : (((P) >= 18 && (P) <= 23)) ? &DDRF : (((P) == 7) ? &DDRE : &DDRB)))
+#define __digitalPinToPINReg(P) \
+  ((((P) >= 0 && (P) <= 4) || (P) == 6 || (P) == 12 || (P) == 24 || (P) == 25 || (P) == 29) ? &PIND : (((P) == 5 || (P) == 13) ? &PINC : (((P) >= 18 && (P) <= 23)) ? &PINF : (((P) == 7) ? &PINE : &PINB)))
 #define __digitalPinToBit(P) \
   (((P) >= 8 && (P) <= 11) ? (P)-4 : (((P) >= 18 && (P) <= 21) ? 25 - (P) : (((P) == 0) ? 2 : (((P) == 1) ? 3 : (((P) == 2) ? 1 : (((P) == 3) ? 0 : (((P) == 4) ? 4 : (((P) == 6) ? 7 : (((P) == 13) ? 7 : (((P) == 14) ? 3 : (((P) == 15) ? 1 : (((P) == 16) ? 2 : (((P) == 17) ? 0 : (((P) == 22) ? 1 : (((P) == 23) ? 0 : (((P) == 24) ? 4 : (((P) == 25) ? 7 : (((P) == 26) ? 4 : (((P) == 27) ? 5 : 6)))))))))))))))))))
 
@@ -320,31 +317,14 @@
 #define SPI_HW_MISO_PIN (12) //PE1
 #define SPI_HW_SCK_PIN (13)  //PE2
 
-#define __digitalPinToPortReg(P)                                                                           \
-  (((P) == 2 || (P) == 7) ? &VPORTA.OUT : ((P) == 5 || (P) == 9 || (P) == 10)                ? &VPORTB.OUT \
-                                      : ((P) == 4)                                           ? &VPORTC.OUT \
-                                      : (((P) >= 14 && (P) <= 17) || (P) == 20 || (P) == 21) ? &VPORTD.OUT \
-                                      : ((P) == 8 || (P) == 11 || (P) == 12 || (P) == 13)    ? &VPORTE.OUT \
-                                                                                             : &VPORTF.OUT)
-#define __digitalPinToDDRReg(P)                                                                            \
-  (((P) == 2 || (P) == 7) ? &VPORTA.DIR : ((P) == 5 || (P) == 9 || (P) == 10)                ? &VPORTB.DIR \
-                                      : ((P) == 4)                                           ? &VPORTC.DIR \
-                                      : (((P) >= 14 && (P) <= 17) || (P) == 20 || (P) == 21) ? &VPORTD.DIR \
-                                      : ((P) == 8 || (P) == 11 || (P) == 12 || (P) == 13)    ? &VPORTE.DIR \
-                                                                                             : &VPORTF.DIR)
-#define __digitalPinToPINReg(P)                                                                          \
-  (((P) == 2 || (P) == 7) ? &VPORTA.IN : ((P) == 5 || (P) == 9 || (P) == 10)                ? &VPORTB.IN \
-                                     : ((P) == 4)                                           ? &VPORTC.IN \
-                                     : (((P) >= 14 && (P) <= 17) || (P) == 20 || (P) == 21) ? &VPORTD.IN \
-                                     : ((P) == 8 || (P) == 11 || (P) == 12 || (P) == 13)    ? &VPORTE.IN \
-                                                                                            : &VPORTF.IN)
-#define __digitalPinToBit(P)                                                                                    \
-  (((P) == 2 || (P) == 9 || (P) == 11 || (P) == 17) ? 0 : ((P) == 7 || (P) == 10 || (P) == 12 || (P) == 16) ? 1 \
-                                                      : ((P) == 5 || (P) == 13 || (P) == 15 || (P) == 18)   ? 2 \
-                                                      : ((P) == 9 || (P) == 14 || (P) == 19)                ? 3 \
-                                                      : ((P) == 6 || (P) == 20)                             ? 4 \
-                                                      : ((P) == 3 || (P) == 21)                             ? 5 \
-                                                                                                            : 6)
+#define __digitalPinToPortReg(P) \
+  (((P) == 2 || (P) == 7) ? &VPORTA.OUT : ((P) == 5 || (P) == 9 || (P) == 10) ? &VPORTB.OUT : ((P) == 4) ? &VPORTC.OUT : (((P) >= 14 && (P) <= 17) || (P) == 20 || (P) == 21) ? &VPORTD.OUT : ((P) == 8 || (P) == 11 || (P) == 12 || (P) == 13) ? &VPORTE.OUT : &VPORTF.OUT)
+#define __digitalPinToDDRReg(P) \
+  (((P) == 2 || (P) == 7) ? &VPORTA.DIR : ((P) == 5 || (P) == 9 || (P) == 10) ? &VPORTB.DIR : ((P) == 4) ? &VPORTC.DIR : (((P) >= 14 && (P) <= 17) || (P) == 20 || (P) == 21) ? &VPORTD.DIR : ((P) == 8 || (P) == 11 || (P) == 12 || (P) == 13) ? &VPORTE.DIR : &VPORTF.DIR)
+#define __digitalPinToPINReg(P) \
+  (((P) == 2 || (P) == 7) ? &VPORTA.IN : ((P) == 5 || (P) == 9 || (P) == 10) ? &VPORTB.IN : ((P) == 4) ? &VPORTC.IN : (((P) >= 14 && (P) <= 17) || (P) == 20 || (P) == 21) ? &VPORTD.IN : ((P) == 8 || (P) == 11 || (P) == 12 || (P) == 13) ? &VPORTE.IN : &VPORTF.IN)
+#define __digitalPinToBit(P) \
+  (((P) == 2 || (P) == 9 || (P) == 11 || (P) == 17) ? 0 : ((P) == 7 || (P) == 10 || (P) == 12 || (P) == 16) ? 1 : ((P) == 5 || (P) == 13 || (P) == 15 || (P) == 18) ? 2 : ((P) == 9 || (P) == 14 || (P) == 19) ? 3 : ((P) == 6 || (P) == 20) ? 4 : ((P) == 3 || (P) == 21) ? 5 : 6)
 
 // TinyCore
 // https://raw.githubusercontent.com/xukangmin/TinyCore/master/avr/package/package_tinycore_index.json
