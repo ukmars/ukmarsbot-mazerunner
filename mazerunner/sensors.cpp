@@ -167,7 +167,7 @@ void disable_sensors() {
 //***************************************************************************//
 
 void update_battery_voltage() {
-  g_battery_voltage = battery_adc_reading * (2.0 * 5.0 / 1024.0);
+  g_battery_voltage = BATTERY_MULTIPLIER * battery_adc_reading;
   g_battery_scale = 255.0 / g_battery_voltage;
 }
 /*********************************** Wall tracking **************************/

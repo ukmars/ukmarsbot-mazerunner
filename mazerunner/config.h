@@ -59,6 +59,38 @@ const float ROTATION_BIAS = 0.0025; // Negative makes robot curve to left
 
 //***************************************************************************//
 
+//***************************************************************************//
+// Battery resistor bridge //Derek Hall//
+// The battery measurement is performed by first reducing the battery voltage
+// with a potential divider formed by two resistors. Here they are named R1 and R2
+// though that may not be their designation on the schematics.
+//
+// Resistor R1 is the high-side resistor and connects to the battery supply
+// Resistor R2 is the low-side resistor and connects to ground
+// Battery voltage is measured at the junction of these resistors
+// The ADC port used for the conversion will have a full scale reading (FSR) that
+// depends on the device being used. Typically that will be 1023 for a 10-bit ADC as
+// found on an Arduino but it may be 4095 if you have a 12-bit ADC.
+// Finally, the ADC converter on your processor will have a reference voltage. On
+// the Arduinos for example, this is 5 Volts. Thus, a full scale reading of
+// 1023 would represent 5 Volts, 511 would be 2.5Volts and so on.
+//
+// in this section you can enter the appropriate values for your ADC and potential
+// divider setup to ensure that the battery voltage reading performed by the sensors
+// is as accurate as possible.
+//
+// By calculating the battery multiplier here, you can be sure that the actual
+// battery voltage calulation is done as efficiently as possible.
+// The compiler will do all these calculations so your program does not have to.
+
+const float BATTERY_R1 = 10000.0; //resistor to battery +
+const float BATTERY_R2 = 10000.0; //resistor to Gnd
+const float BATTERY_DIVIDER_RATIO = BATTERY_R2 / (BATTERY_R1 + BATTERY_R2);
+const float ADC_FSR = 1023.0;    //The maximum reading for the ADC
+const float ADC_REF_VOLTS = 5.0; //Reference voltage of ADC
+
+const float BATTERY_MULTIPLIER = (ADC_REF_VOLTS / ADC_FSR / BATTERY_DIVIDER_RATIO);
+
 //*** MOTION CONTROL CONSTANTS **********************************************//
 
 // forward motion controller constants
