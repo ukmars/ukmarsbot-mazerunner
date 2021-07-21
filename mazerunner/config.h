@@ -38,7 +38,16 @@
 // force rewrite of EEPROM settings. Set this when developing
 #define ALWAYS_USE_DEFAULT_SETTINGS 0
 //***************************************************************************//
-const bool USER_MODE = true;
+// USER_MODE tells the software whether to run the built-in tests or custom 
+// user-provided routines. When set to false, execution is directed to the 
+// function run_tests() in tests.cpp. this is the default and it is where all
+// the setup and configuration can be done.
+// when you are ready to try your own code, change the values of USER_MODE to be 
+// true and execution will be directed to the function run_mouse() in user.cpp.
+// In that file you will find some examples that you can modify, extend or
+// replace as you see fit.
+
+const bool USER_MODE = false;
 
 //***************************************************************************//
 // We need to know about the drive mechanics.
