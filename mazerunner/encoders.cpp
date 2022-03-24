@@ -33,7 +33,7 @@
 #include "encoders.h"
 #include "digitalWriteFast.h"
 #include "settings.h"
-#include <arduino.h>
+#include <Arduino.h>
 #include <util/atomic.h>
 /****************************************************************************/
 /*   ENCODERS                                                               */

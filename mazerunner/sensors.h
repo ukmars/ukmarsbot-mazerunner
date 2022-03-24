@@ -33,7 +33,7 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-#include <arduino.h>
+#include <Arduino.h>
 #include <util/atomic.h>
 //***************************************************************************//
 extern volatile float g_battery_voltage;

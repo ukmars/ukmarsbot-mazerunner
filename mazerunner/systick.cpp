@@ -35,7 +35,7 @@
 #include "motors.h"
 #include "profile.h"
 #include "sensors.h"
-#include <arduino.h>
+#include <Arduino.h>
 
 void setup_systick() {
   bitClear(TCCR2A, WGM20);

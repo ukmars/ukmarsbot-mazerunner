@@ -36,7 +36,7 @@
 #include "profile.h"
 #include "sensors.h"
 #include "settings.h"
-#include <arduino.h>
+#include <Arduino.h>
 
 // these are maintained only for logging
 float g_left_motor_volts;
