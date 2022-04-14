@@ -78,7 +78,7 @@ void print_walls() {
  * TODO: need a function just to adjust forward position
  */
 static void stopAndAdjust() {
-  float remaining = 270 - forward.position();
+  float remaining = (FULL_CELL + HALF_CELL) - forward.position();
   disable_steering();
   forward.start(remaining, forward.speed(), 0, forward.acceleration());
   while (not forward.is_finished()) {
@@ -131,7 +131,7 @@ void Mouse::end_run() {
   bool has_wall = frontWall;
   disable_steering();
   log_status('T');
-  float remaining = 270 - forward.position();
+  float remaining = (FULL_CELL + HALF_CELL) - forward.position();
   forward.start(remaining, forward.speed(), 30, forward.acceleration());
   if (has_wall) {
     while (get_front_sensor() < 850) {
@@ -173,7 +173,7 @@ void Mouse::turn_SS90ER() {
   float alpha = 4000;   // deg/s/s
   bool triggered = false;
   disable_steering();
-  float distance = 190.0 + run_in - forward.position();
+  float distance = FULL_CELL + 10.0 + run_in - forward.position();
   forward.start(distance, forward.speed(), DEFAULT_TURN_SPEED, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
     delay(2);
@@ -195,7 +195,7 @@ void Mouse::turn_SS90ER() {
   while (not forward.is_finished()) {
     delay(2);
   }
-  forward.set_position(170);
+  forward.set_position(FULL_CELL - 10);
 }
 
 void Mouse::turn_SS90EL() {
@@ -206,7 +206,7 @@ void Mouse::turn_SS90EL() {
   float alpha = 4000;   // deg/s/s
   bool triggered = false;
   disable_steering();
-  float distance = 190.0 + run_in - forward.position();
+  float distance = FULL_CELL + 10.0 + run_in - forward.position();
   forward.start(distance, forward.speed(), DEFAULT_TURN_SPEED, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
     delay(2);
@@ -228,7 +228,7 @@ void Mouse::turn_SS90EL() {
   while (not forward.is_finished()) {
     delay(2);
   }
-  forward.set_position(170);
+  forward.set_position(FULL_CELL - 10);
 }
 
 /**
@@ -247,7 +247,7 @@ void Mouse::turn_around() {
   bool has_wall = frontWall;
   disable_steering();
   log_status('A');
-  float remaining = 270 - forward.position();
+  float remaining = (FULL_CELL + HALF_CELL) - forward.position();
   forward.start(remaining, forward.speed(), 30, forward.acceleration());
   if (has_wall) {
     while (get_front_sensor() < FRONT_REFERENCE) {
@@ -265,7 +265,7 @@ void Mouse::turn_around() {
   while (not forward.is_finished()) {
     delay(2);
   }
-  forward.set_position(170);
+  forward.set_position(FULL_CELL - 10);
 }
 
 //***************************************************************************//
@@ -322,9 +322,9 @@ void Mouse::follow_to(unsigned char target) {
   while (not forward.is_finished()) {
     delay(2);
   }
-  forward.set_position(90);
+  forward.set_position(HALF_CELL);
   Serial.println(F("Off we go..."));
-  wait_until_position(170);
+  wait_until_position(FULL_CELL - 10);
   // at the start of this loop we are always at the sensing point
   while (location != target) {
     if (button_pressed()) {
@@ -351,9 +351,9 @@ void Mouse::follow_to(unsigned char target) {
       heading = (heading + 3) & 0x03;
       log_status('x');
     } else if (!frontWall) {
-      forward.adjust_position(-180);
+      forward.adjust_position(-FULL_CELL);
       log_status('F');
-      wait_until_position(170);
+      wait_until_position(FULL_CELL - 10.0);
       log_status('x');
     } else if (!rightWall) {
       turn_SS90ER();
@@ -440,9 +440,9 @@ int Mouse::search_to(unsigned char target) {
   while (not forward.is_finished()) {
     delay(2);
   }
-  forward.set_position(90);
+  forward.set_position(HALF_CELL);
   Serial.println(F("Off we go..."));
-  wait_until_position(170);
+  wait_until_position(FULL_CELL - 10);
   // TODO. the robot needs to start each iteration at the sensing point
   while (location != target) {
     if (button_pressed()) {
@@ -469,9 +469,9 @@ int Mouse::search_to(unsigned char target) {
 
       switch (hdgChange) {
         case 0: // ahead
-          forward.adjust_position(-180);
+          forward.adjust_position(-FULL_CELL);
           log_status('F');
-          wait_until_position(170);
+          wait_until_position(FULL_CELL - 10);
           log_status('x');
           break;
         case 1: // right
@@ -513,7 +513,7 @@ int Mouse::search_to(unsigned char target) {
 // run-length encoding of straights is done on the fly.
 // turns are in-place so the mouse stops after each straight.
 //--------------------------------------------------------------------------
-void Mouse::run_in_place_turns(int topSpeed) { //TODO
+void Mouse::run_in_place_turns(int topSpeed) { // TODO
   expand_path(path);
   // debug << path << endl;
   // debug << commands << endl;
@@ -530,20 +530,20 @@ void Mouse::run_in_place_turns(int topSpeed) { //TODO
       index++;
     } else if (commands[index] == 'H' && commands[index + 1] == 'R' && commands[index + 2] == 'H') {
 
-      move_forward(90, topSpeed, 0);
+      move_forward(HALF_CELL, topSpeed, 0);
       turn_IP90R();
-      move_forward(90, topSpeed, topSpeed);
+      move_forward(HALF_CELL, topSpeed, topSpeed);
       index += 3;
     } else if (commands[index] == 'H' && commands[index + 1] == 'L' && commands[index + 2] == 'H') {
-      move_forward(90, topSpeed, 0);
+      move_forward(HALF_CELL, topSpeed, 0);
       turn_IP90L();
-      move_forward(90, topSpeed, topSpeed);
+      move_forward(HALF_CELL, topSpeed, topSpeed);
       index += 3;
     } else if (commands[index] == 'H' && commands[index + 1] == 'H') {
-      move_forward(90, topSpeed, topSpeed);
+      move_forward(HALF_CELL, topSpeed, topSpeed);
       index++;
     } else if (commands[index] == 'H' && commands[index + 1] == 'S') {
-      move_forward(90, topSpeed, 0);
+      move_forward(HALF_CELL, topSpeed, 0);
       index++;
     } else {
       // debug << F("Instruction error!\n");
@@ -590,12 +590,12 @@ void Mouse::run_smooth_turns(int topSpeed) {
       index += 3;
     } else if (commands[index] == 'H' && commands[index + 1] == 'H') {
       // debug << 'H';
-      move_forward(90, topSpeed, topSpeed);
+      move_forward(HALF_CELL, topSpeed, topSpeed);
       ;
       index++;
     } else if (commands[index] == 'H' && commands[index + 1] == 'S') {
       // debug << 'H';
-      move_forward(90, topSpeed, 0);
+      move_forward(HALF_CELL, topSpeed, 0);
       index++;
     } else {
       // debug << F("Instruction error!\n");

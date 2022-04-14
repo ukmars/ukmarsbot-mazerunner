@@ -68,6 +68,10 @@ const float ROTATION_BIAS = 0.0025; // Negative makes robot curve to left
 
 //***************************************************************************//
 
+// This is the size fo each cell in the maze. Normally 180mm for a classic maze
+const float FULL_CELL = 180.0f;
+const float HALF_CELL = FULL_CELL / 2.0;
+
 //***************************************************************************//
 // Battery resistor bridge //Derek Hall//
 // The battery measurement is performed by first reducing the battery voltage

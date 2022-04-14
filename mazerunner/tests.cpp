@@ -172,13 +172,13 @@ void test_spin_turn(float angle) {
  * @brief perform 1000mm forward or reverse move
  */
 void test_fwd_move() {
-  float distance_a = 720.0;      // mm
-  float distance_b = 270.0;      // mm
-  float max_speed_a = 800.0;     // mm/s
-  float common_speed = 300.0;    // mm/s
-  float max_speed_b = 500.0;     // mm/s
-  float acceleration_a = 2000.0; // mm/s/s
-  float acceleration_b = 1000.0; // mm/s/s
+  float distance_a = 720.0;                 // mm
+  float distance_b = FULL_CELL + HALF_CELL; // mm
+  float max_speed_a = 800.0;                // mm/s
+  float common_speed = 300.0;               // mm/s
+  float max_speed_b = 500.0;                // mm/s
+  float acceleration_a = 2000.0;            // mm/s/s
+  float acceleration_b = 1000.0;            // mm/s/s
   reset_drive_system();
   enable_motor_controllers();
   report_profile_header();
@@ -201,9 +201,9 @@ void test_fwd_move() {
  */
 
 void test_sprint_and_return() {
-  float distance = 3 * 180.0;  // mm
-  float max_speed = 1200.0;    // mm/s
-  float acceleration = 2000.0; // mm/s/s
+  float distance = 3 * FULL_CELL; // mm
+  float max_speed = 1200.0;       // mm/s
+  float acceleration = 2000.0;    // mm/s/s
   reset_drive_system();
   enable_motor_controllers();
   report_profile_header();
@@ -343,9 +343,9 @@ void test_stop_at() {
  */
 void test_sprint_with_steering() {
   // sensor calibration
-  float distance = 5 * 180.0;  // mm
-  float max_speed = 800.0;     // mm/s
-  float acceleration = 2000.0; // mm/s/s
+  float distance = 5 * FULL_CELL; // mm
+  float max_speed = 800.0;        // mm/s
+  float acceleration = 2000.0;    // mm/s/s
   enable_sensors();
   reset_drive_system();
   enable_steering();
