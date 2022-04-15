@@ -171,10 +171,10 @@ void run_mouse(int function) {
       while (not forward.is_finished()) {
         delay(2);
       }
-      // forward.set_position(90);
+      // forward.set_position(HALF_CELL);
       // Serial.println(F("Off we go..."));
-      // // wait_until_position(170);
-      // stop_at(170);
+      // // wait_until_position(FULL_CELL-10);
+      // stop_at(FULL_CELL-10);
       Serial.print('@');
       print_justified((int)forward.position(), 4);
       Serial.print(' ');
@@ -188,10 +188,10 @@ void run_mouse(int function) {
       while (not forward.is_finished()) {
         delay(2);
       }
-      // forward.set_position(90);
+      // forward.set_position(HALF_CELL);
       // Serial.println(F("Off we go..."));
-      // // wait_until_position(170);
-      // stop_at(170);
+      // // wait_until_position(FULL_CELL-10);
+      // stop_at(FULL_CELL-10);
       Serial.print('@');
       print_justified((int)forward.position(), 4);
       Serial.print(' ');
@@ -202,7 +202,7 @@ void run_mouse(int function) {
       reset_drive_system();
       enable_motor_controllers();
       report_profile_header();
-      forward.start(180, 180, 30, 1000);
+      forward.start(FULL_CELL, 180, 30, 1000);
       while (not forward.is_finished()) {
         report_profile();
       }

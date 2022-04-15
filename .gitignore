@@ -10,3 +10,4 @@ html/
 .idea/
 # Ignore Mac files
 .DS_Store
+cmake-*/
