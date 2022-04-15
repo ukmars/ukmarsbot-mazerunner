@@ -172,7 +172,7 @@ void test_spin_turn(float angle) {
  * @brief perform 1000mm forward or reverse move
  */
 void test_fwd_move() {
-  float distance_a = 720.0;                 // mm
+  float distance_a = 3 * FULL_CELL;         // mm
   float distance_b = FULL_CELL + HALF_CELL; // mm
   float max_speed_a = 800.0;                // mm/s
   float common_speed = 300.0;               // mm/s
@@ -476,7 +476,7 @@ void test_edge_detection() {
   enable_motor_controllers();
   disable_steering();
   Serial.println(F("Edge positions:"));
-  forward.start(150, 100, 0, 1000);
+  forward.start(FULL_CELL - 30.0, 100, 0, 1000);
   while (not forward.is_finished()) {
     if (g_left_wall_sensor > left_max) {
       left_max = g_left_wall_sensor;

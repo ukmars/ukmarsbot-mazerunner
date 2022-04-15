@@ -195,7 +195,7 @@ void Mouse::turn_SS90ER() {
   while (not forward.is_finished()) {
     delay(2);
   }
-  forward.set_position(FULL_CELL - 10);
+  forward.set_position(FULL_CELL - 10.0);
 }
 
 void Mouse::turn_SS90EL() {
@@ -228,7 +228,7 @@ void Mouse::turn_SS90EL() {
   while (not forward.is_finished()) {
     delay(2);
   }
-  forward.set_position(FULL_CELL - 10);
+  forward.set_position(FULL_CELL - 10.0);
 }
 
 /**
@@ -261,11 +261,11 @@ void Mouse::turn_around() {
   // Be sure robot has come to a halt.
   forward.stop();
   spin_turn(-180, SPEEDMAX_SPIN_TURN, SPIN_TURN_ACCELERATION);
-  forward.start(80, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
+  forward.start(HALF_CELL - 10.0, SPEEDMAX_EXPLORE, SPEEDMAX_EXPLORE, SEARCH_ACCELERATION);
   while (not forward.is_finished()) {
     delay(2);
   }
-  forward.set_position(FULL_CELL - 10);
+  forward.set_position(FULL_CELL - 10.0);
 }
 
 //***************************************************************************//
