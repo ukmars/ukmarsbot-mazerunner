@@ -280,11 +280,58 @@ void cli_prompt() {
   Serial.print(' ');
 }
 
+void cli_help() {
+  Serial.println(F("$   : settings"));
+  Serial.println(F("W   : display maze walls"));
+  Serial.println(F("X   : reset maze"));
+  Serial.println(F("R   : display maze with directions"));
+  Serial.println(F("S   : show sensor readings"));
+  Serial.println(F("T n : Run Test n"));
+  Serial.println(F("       0 = ---"));
+  Serial.println(F("       1 = Report sensor calibration"));
+  Serial.println(F("       2 = load settings from EEPROM"));
+  Serial.println(F("       3 = save settings to EEPROM"));
+  Serial.println(F("       4 = reset settings to defaults"));
+  Serial.println(F("       5 = calibrate encoders"));
+  Serial.println(F("       6 = test rotation controller tunings"));
+  Serial.println(F("       7 = test forward controller tunings"));
+  Serial.println(F("       8 = spin turn 360"));
+  Serial.println(F("       9 = forward move"));
+  Serial.println(F("      10 = sprint and return"));
+  Serial.println(F("      11 = smooth 90 turn"));
+  Serial.println(F("      12 = stop at distance"));
+  Serial.println(F("      13 = sprint with steeering"));
+  Serial.println(F("      14 = test steering lock"));
+  Serial.println(F("      15 = ---"));
+  Serial.println(F("      20 = test edge detection"));
+  Serial.println(F("      21 = sensor spin calibration"));
+  Serial.println(F("U n : Run user function n"));
+  Serial.println(F("       0 = ---"));
+  Serial.println(F("       1 = log front sensor "));
+  Serial.println(F("       2 = report status "));
+  Serial.println(F("       3 = - "));
+  Serial.println(F("       4 = test SS90ER"));
+  Serial.println(F("       5 = test SS90EL"));
+  Serial.println(F("       6 = - "));
+  Serial.println(F("       7 = move forward 500mm"));
+  Serial.println(F("       8 = move to sensing point"));
+  Serial.println(F("       9 = move one cell "));
+  Serial.println(F("      10 = test 360 spin turn"));
+  Serial.println(F("      11 = test 90 left spin"));
+  Serial.println(F("      12 = test 90 right spin"));
+  Serial.println(F("      13 = test back wall start "));
+  Serial.println(F("      14 = search to goal "));
+  Serial.println(F("      15 = follow to goal"));
+}
+
 void cli_interpret(const Args &args) {
   if (strlen(args.argv[0]) == 1) {
     // These are all single-character commands
     char c = args.argv[0][0]; //  first character of first token
     switch (c) {
+      case '?':
+        cli_help();
+        break;
       case '$':
         cli_settings_command(args);
         break;
