@@ -54,7 +54,7 @@ const bool USER_MODE = false;
 
 const float WHEEL_DIAMETER = 31.966; //33.298; // Adjust on test
 const float ENCODER_PULSES = 12.0;
-const float GEAR_RATIO = 19.54;
+const float GEAR_RATIO = 11.4; //19.54;
 
 // Mouse radius is the distance between the contact patches of the drive wheels.
 // A good starting approximation is half the distance between the wheel centres.
