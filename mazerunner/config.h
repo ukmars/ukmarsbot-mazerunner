@@ -47,7 +47,7 @@
 // In that file you will find some examples that you can modify, extend or
 // replace as you see fit.
 
-const bool USER_MODE = false;
+const bool USER_MODE = true;
 
 //***************************************************************************//
 // We need to know about the drive mechanics.
