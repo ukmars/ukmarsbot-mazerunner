@@ -56,12 +56,17 @@ void setup() {
   pinMode(EMITTER_B, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
   enable_sensors();
-  initialise_maze(emptyMaze);
   setup_motors();
   setup_encoders();
   setup_adc();
+  delay(150);
   Serial.println();
   disable_sensors();
+  if (button_pressed()) {
+    initialise_maze(emptyMaze);
+    Serial.println(F("Clearing the Maze"));
+    wait_for_button_release();
+  }
   Serial.println(F("RDY"));
 }
 

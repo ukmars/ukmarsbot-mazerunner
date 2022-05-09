@@ -239,6 +239,10 @@ void run_mouse(int function) {
       dorothy.handStart = false;
       dorothy.search_to(START);
       dorothy.search_to(maze_goal());
+      dorothy.search_to(START);
+      dorothy.search_to(maze_goal());
+      dorothy.search_to(START);
+      reset_drive_system();
 
       break;
     case 15:
