@@ -47,14 +47,14 @@
 // In that file you will find some examples that you can modify, extend or
 // replace as you see fit.
 
-const bool USER_MODE = false;
+const bool USER_MODE = true;
 
 //***************************************************************************//
 // We need to know about the drive mechanics.
 
 const float WHEEL_DIAMETER = 31.966; //33.298; // Adjust on test
 const float ENCODER_PULSES = 12.0;
-const float GEAR_RATIO = 19.54;
+const float GEAR_RATIO = 11.4; //19.54;
 
 // Mouse radius is the distance between the contact patches of the drive wheels.
 // A good starting approximation is half the distance between the wheel centres.
@@ -162,11 +162,11 @@ const float DEFAULT_SEARCH_ACCEL = 2000;
 //***** SENSOR CALIBRATION **************************************************//
 // wall sensor thresholds and constants
 // RAW values for the front sensor when the robot is backed up to a wall
-const int FRONT_CALIBRATION = 70;
+const int FRONT_CALIBRATION = 82; //70;
 // RAW values for the side sensors when the robot is centred in a cell
 // and there is no wall ahead
-const int LEFT_CALIBRATION = 97;
-const int RIGHT_CALIBRATION = 92;
+const int LEFT_CALIBRATION = 112; //97;
+const int RIGHT_CALIBRATION = 82; //92;
 
 // This is the normalised value seen by the front sensor when the mouse is
 // in its calibration position
@@ -199,7 +199,7 @@ const float LOOP_INTERVAL = (1.0 / LOOP_FREQUENCY);
 
 //***************************************************************************//
 // change the revision if the settings structure changes to force rewrte of EEPROM
-const int SETTINGS_REVISION = 10429;
+const int SETTINGS_REVISION = 107;
 const uint32_t BAUDRATE = 115200;
 const int DEFAULT_DECIMAL_PLACES = 5;
 const int EEPROM_ADDR_SETTINGS = 0x0000;

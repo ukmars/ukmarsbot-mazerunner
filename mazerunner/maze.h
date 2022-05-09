@@ -30,7 +30,7 @@
 #include <stdint.h>
 
 #define MAZE_WIDTH 16
-#define GOAL 0x22
+#define GOAL 0x77
 #define START 0x00
 
 // directions for mapping
