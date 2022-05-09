@@ -166,7 +166,7 @@ void Mouse::end_run() {
  */
 void Mouse::turn_SS90ER() {
 
-  float run_in = 5.0;   // mm
+  float run_in = 15.0;  // mm
   float run_out = 10.0; // mm
   float angle = -90.0;  // deg
   float omega = 280;    // deg/s
@@ -199,7 +199,7 @@ void Mouse::turn_SS90ER() {
 }
 
 void Mouse::turn_SS90EL() {
-  float run_in = 5.0;   // mm
+  float run_in = 7.0;  // mm
   float run_out = 10.0; // mm
   float angle = 90.0;   // deg
   float omega = 280;    // deg/s
