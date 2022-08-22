@@ -224,8 +224,8 @@ float update_wall_sensors() {
 
 /***
  * NOTE: Manual analogue conversions
- * All eight available ADC channels are aatomatically converted
- * by the sensor interrupt. Attempting to performa a manual ADC
+ * All eight available ADC channels are automatically converted
+ * by the sensor interrupt. Attempting to perform a manual ADC
  * conversion with the Arduino AnalogueIn() function will disrupt
  * that process so avoid doing that.
  */
@@ -271,13 +271,13 @@ void start_sensor_cycle() {
  * and a conversion started. After each ADC conversion the interrupt gets
  * generated and this ISR is called. The eight channels are read in turn with
  * the sensor emitter(s) off.
- * At the end of that sequence, the emiter(s) get turned on and a dummy ADC
+ * At the end of that sequence, the emitter(s) get turned on and a dummy ADC
  * conversion is started to provide a delay while the sensors respond.
  * After that, all channels are read again to get the lit values.
  * After all the channels have been read twice, the ADC interrupt is disabbled
  * and the sensors are idle until triggered again.
  *
- * The ADC service runs all th etime even with the sensors 'disabled'. In this
+ * The ADC service runs all the time even with the sensors 'disabled'. In this
  * software, 'enabled' only means that the emitters are turned on in the second 
  * phase. Without that, you might expect the sensor readings to be zero.
  * 
