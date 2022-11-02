@@ -224,8 +224,8 @@ float update_wall_sensors() {
 
 /***
  * NOTE: Manual analogue conversions
- * All eight available ADC channels are aatomatically converted
- * by the sensor interrupt. Attempting to performa a manual ADC
+ * All eight available ADC channels are automatically converted
+ * by the sensor interrupt. Attempting to perform a a manual ADC
  * conversion with the Arduino AnalogueIn() function will disrupt
  * that process so avoid doing that.
  */
