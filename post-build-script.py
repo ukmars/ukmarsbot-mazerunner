@@ -4,6 +4,8 @@
 
 
 Import("env", "projenv")
+import os
+from subprocess import Popen, PIPE
 
 # access to global build environment
 # print(env.Dump())
@@ -28,16 +30,19 @@ env.AddPostAction(
 )
 
 # format sources
-env.AddPostAction(
-    "$BUILD_DIR/${PROGNAME}.elf",
-    env.VerboseAction(" ".join([
-        "clang-format -i ",
-        # " --verbose ",
-        "${PROJECT_SRC_DIR}/*.cpp",
-        "${PROJECT_SRC_DIR}/*.h",
-        "${PROJECT_SRC_DIR}/*.ino",
-    ]), "Format sources in ${PROJECT_SRC_DIR}")
-)
+p = Popen('clang-format -version',shell = True, stderr = PIPE, stdout = PIPE)
+output,error = p.communicate()
+if len(error) == 0:
+    env.AddPostAction(
+        "$BUILD_DIR/${PROGNAME}.elf",
+        env.VerboseAction(" ".join([
+            "clang-format -i ",
+            # " --verbose ",
+            "${PROJECT_SRC_DIR}/*.cpp",
+            "${PROJECT_SRC_DIR}/*.h",
+            "${PROJECT_SRC_DIR}/*.ino",
+        ]), "Format sources in ${PROJECT_SRC_DIR}")
+    )
 
 
 #
