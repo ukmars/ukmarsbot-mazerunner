@@ -15,6 +15,11 @@ For the impatient, if you are wanting to run this code in the Arduino IDE then y
 
 The project is maintained and developed using PlatformIO with Visual Studio Code. If you have not used this as a development platform, I highly recommend it as a huge improvement over the very dated Arduino IDE. You can find instructions for installing VSCode and PlatformIO at https://ukmars.org/resources/platformio-vscode-windows/
 
+Before getting too carried away, look at the platformio.ini file and make whatever changes are needed for your operating environment. You will see, in the default environment, an entry for a **extra script**. This runs the python file  **`post-build-script.py`**. The script runs after a successful build of the software and performs a number of additional actions:
+-  Generate an assembly code listing in the file `firmware.lst`. This is for the old-school nerds and the terminally curious. It has no effect on the operation of the robot.
+- Display some additional information about the size of the flash and RAM used in the code. Only interesting if you think you are running out of one or the other.
+- Runs **clang-format** to reformat all the code in the project so that it has consistency in terms of things like indents and the use of whitespace. You should always use a formatter for code that is to be submitted to the repository. The clang-format settings file is also included in the project. If clang-format is not present on your system the script should just bypass this step. I recommend that you do install clang-format at some point though. It is very useful.
+
 ## Initial Configuration
 
 Before flashing your robot, look in the config.h file. In here you will find a number of default settings describing things like the motor gear ratio, wheel diameter and wheel spacing. Check that these are at least close to the values required for your robot.
