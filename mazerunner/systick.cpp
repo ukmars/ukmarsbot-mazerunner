@@ -66,7 +66,7 @@ void setup_systick() {
  * With just a single profile active and moving, that increases to nearly 30%.
  * Two such active profiles increases it to about 35-40%.
  *
- * The reasin that two prifiles does not take up twice as much time is that
+ * The reason that two profiles does not take up twice as much time is that
  * an active profile has a processing overhead even if there is no motion.
  *
  * Most of the load is due to that overhead. While the profile generates actual
