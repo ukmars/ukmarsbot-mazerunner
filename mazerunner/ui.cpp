@@ -363,7 +363,7 @@ void cli_interpret(const Args &args) {
     return;
   }
   // parse multi-character commands here
-  //TODO - remove these debugging lines
+  // TODO - remove these debugging lines
   for (int i = 0; i < args.argc; i++) {
     Serial.println(args.argv[i]);
   }

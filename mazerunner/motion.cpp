@@ -43,7 +43,7 @@
  * might be used to make the robot move.
  *
  * Other examples are to be found in tests.cpp
-*/
+ */
 //***************************************************************************//
 
 /**

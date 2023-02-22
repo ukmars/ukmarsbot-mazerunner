@@ -52,15 +52,15 @@ const bool USER_MODE = true;
 //***************************************************************************//
 // We need to know about the drive mechanics.
 
-const float WHEEL_DIAMETER = 31.966; //33.298; // Adjust on test
+const float WHEEL_DIAMETER = 31.966; // 33.298; // Adjust on test
 const float ENCODER_PULSES = 12.0;
-const float GEAR_RATIO = 11.4; //19.54;
+const float GEAR_RATIO = 11.4; // 19.54;
 
 // Mouse radius is the distance between the contact patches of the drive wheels.
 // A good starting approximation is half the distance between the wheel centres.
 // After testing, you may find the working value to be larger or smaller by some
 // small amount.
-const float MOUSE_RADIUS = 37.92; //39.50; // Adjust on test
+const float MOUSE_RADIUS = 37.92; // 39.50; // Adjust on test
 
 // The robot is likely to have wheels of different diameters and that must be
 // compensated for if the robot is to reliably drive in a straight line
@@ -96,11 +96,11 @@ const float HALF_CELL = FULL_CELL / 2.0;
 // battery voltage calulation is done as efficiently as possible.
 // The compiler will do all these calculations so your program does not have to.
 
-const float BATTERY_R1 = 10000.0; //resistor to battery +
-const float BATTERY_R2 = 10000.0; //resistor to Gnd
+const float BATTERY_R1 = 10000.0; // resistor to battery +
+const float BATTERY_R2 = 10000.0; // resistor to Gnd
 const float BATTERY_DIVIDER_RATIO = BATTERY_R2 / (BATTERY_R1 + BATTERY_R2);
-const float ADC_FSR = 1023.0;    //The maximum reading for the ADC
-const float ADC_REF_VOLTS = 5.0; //Reference voltage of ADC
+const float ADC_FSR = 1023.0;    // The maximum reading for the ADC
+const float ADC_REF_VOLTS = 5.0; // Reference voltage of ADC
 
 const float BATTERY_MULTIPLIER = (ADC_REF_VOLTS / ADC_FSR / BATTERY_DIVIDER_RATIO);
 
@@ -122,14 +122,14 @@ const float STEERING_ADJUST_LIMIT = 10.0; // deg/s
 // Motor Feedforward
 /***
  * Speed Feedforward is used to add a drive voltage proportional to the motor speed
- * The units are Volts per mm/s and the value will be different for each 
+ * The units are Volts per mm/s and the value will be different for each
  * robot where the motor + gearbox + wheel diamter + robot weight are different
  * You can experimentally determine a suitable value by turning off the controller
- * and then commanding a set voltage to the motors. The same voltage is applied to 
+ * and then commanding a set voltage to the motors. The same voltage is applied to
  * each motor. Have the robot report its speed regularly or have it measure
  * its steady state speed after a period of acceleration.
  * Do this for several applied voltages from 0.5Volts to 3 Volts in steps of 0.5V
- * Plot a chart of steady state speed against voltage. The slope of that graph is 
+ * Plot a chart of steady state speed against voltage. The slope of that graph is
  * the speed feedforward, SPEED_FF.
  * Note that the line will not pass through the origin because there will be
  * some minimum voltage needed just to ovecome friction and get the wheels to turn at all.
@@ -162,11 +162,11 @@ const float DEFAULT_SEARCH_ACCEL = 2000;
 //***** SENSOR CALIBRATION **************************************************//
 // wall sensor thresholds and constants
 // RAW values for the front sensor when the robot is backed up to a wall
-const int FRONT_CALIBRATION = 82; //70;
+const int FRONT_CALIBRATION = 82; // 70;
 // RAW values for the side sensors when the robot is centred in a cell
 // and there is no wall ahead
-const int LEFT_CALIBRATION = 112; //97;
-const int RIGHT_CALIBRATION = 82; //92;
+const int LEFT_CALIBRATION = 112; // 97;
+const int RIGHT_CALIBRATION = 82; // 92;
 
 // This is the normalised value seen by the front sensor when the mouse is
 // in its calibration position

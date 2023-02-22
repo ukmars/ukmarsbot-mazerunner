@@ -88,4 +88,4 @@ extern char commands[];
 
 extern Mouse dorothy;
 
-#endif //MOUSE_H
+#endif // MOUSE_H

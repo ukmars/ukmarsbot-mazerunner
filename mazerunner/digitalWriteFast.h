@@ -106,10 +106,10 @@
 
 // digital functions
 //#ifndef digitalPinToPortReg
-#define SPI_SW_SS_PIN (10)   //SS on Uno (for software SPI)
-#define SPI_SW_MOSI_PIN (11) //MOSI on Uno (for software SPI)
-#define SPI_SW_MISO_PIN (12) //MISO on Uno (for software SPI)
-#define SPI_SW_SCK_PIN (13)  //SCK on Uno (for software SPI)
+#define SPI_SW_SS_PIN (10)   // SS on Uno (for software SPI)
+#define SPI_SW_MOSI_PIN (11) // MOSI on Uno (for software SPI)
+#define SPI_SW_MISO_PIN (12) // MISO on Uno (for software SPI)
+#define SPI_SW_SCK_PIN (13)  // SCK on Uno (for software SPI)
 
 // --- Arduino Due and SAM3X8E based boards ---
 #if (defined(ARDUINO_SAM_DUE) || \
@@ -121,10 +121,10 @@
 #define I2C_SDA_PIN (20)
 #define I2C_SCL_PIN (21)
 
-#define SPI_HW_SS_PIN (78)   //SS0:77, SS1:87, SS2:86, SS3:78
-#define SPI_HW_MOSI_PIN (75) //75
-#define SPI_HW_MISO_PIN (74) //74
-#define SPI_HW_SCK_PIN (76)  //76
+#define SPI_HW_SS_PIN (78)   // SS0:77, SS1:87, SS2:86, SS3:78
+#define SPI_HW_MOSI_PIN (75) // 75
+#define SPI_HW_MISO_PIN (74) // 74
+#define SPI_HW_SCK_PIN (76)  // 76
 
 // --- Arduino Zero and SAMD21G18 based boards ---
 #elif (defined(ARDUINO_SAMD_ZERO) || \
@@ -136,10 +136,10 @@
 #define I2C_SDA_PIN (16)
 #define I2C_SCL_PIN (17)
 
-#define SPI_HW_SS_PIN (14)   //14
-#define SPI_HW_MOSI_PIN (21) //21
-#define SPI_HW_MISO_PIN (18) //18
-#define SPI_HW_SCK_PIN (20)  //20
+#define SPI_HW_SS_PIN (14)   // 14
+#define SPI_HW_MOSI_PIN (21) // 21
+#define SPI_HW_MISO_PIN (18) // 18
+#define SPI_HW_SCK_PIN (20)  // 20
 
 // --- Arduino Mega and ATmega128x/256x based boards ---
 #elif (defined(ARDUINO_AVR_MEGA) ||     \
@@ -150,16 +150,16 @@
        defined(__AVR_ATmega2560__) ||   \
        defined(__AVR_ATmega2561__))
 
-#define UART_RX_PIN (0) //PE0
-#define UART_TX_PIN (1) //PE1
+#define UART_RX_PIN (0) // PE0
+#define UART_TX_PIN (1) // PE1
 
 #define I2C_SDA_PIN (20)
 #define I2C_SCL_PIN (21)
 
-#define SPI_HW_SS_PIN (53)   //PB0
-#define SPI_HW_MOSI_PIN (51) //PB2
-#define SPI_HW_MISO_PIN (50) //PB3
-#define SPI_HW_SCK_PIN (52)  //PB1
+#define SPI_HW_SS_PIN (53)   // PB0
+#define SPI_HW_MOSI_PIN (51) // PB2
+#define SPI_HW_MISO_PIN (50) // PB3
+#define SPI_HW_SCK_PIN (52)  // PB1
 
 #define __digitalPinToPortReg(P) \
   (((P) >= 22 && (P) <= 29) ? &PORTA : ((((P) >= 10 && (P) <= 13) || ((P) >= 50 && (P) <= 53)) ? &PORTB : (((P) >= 30 && (P) <= 37) ? &PORTC : ((((P) >= 18 && (P) <= 21) || (P) == 38) ? &PORTD : ((((P) >= 0 && (P) <= 3) || (P) == 5) ? &PORTE : (((P) >= 54 && (P) <= 61) ? &PORTF : ((((P) >= 39 && (P) <= 41) || (P) == 4) ? &PORTG : ((((P) >= 6 && (P) <= 9) || (P) == 16 || (P) == 17) ? &PORTH : (((P) == 14 || (P) == 15) ? &PORTJ : (((P) >= 62 && (P) <= 69) ? &PORTK : &PORTL))))))))))
@@ -190,16 +190,16 @@
        defined(__AVR_ATmega8535__)) && \
     !defined(BOBUINO_PINOUT)
 
-#define UART_RX_PIN (8) //PD0
-#define UART_TX_PIN (9) //PD1
+#define UART_RX_PIN (8) // PD0
+#define UART_TX_PIN (9) // PD1
 
-#define I2C_SDA_PIN (17) //PC1
-#define I2C_SCL_PIN (16) //PC0
+#define I2C_SDA_PIN (17) // PC1
+#define I2C_SCL_PIN (16) // PC0
 
-#define SPI_HW_SS_PIN (4)   //PB4
-#define SPI_HW_MOSI_PIN (5) //PB5
-#define SPI_HW_MISO_PIN (6) //PB6
-#define SPI_HW_SCK_PIN (7)  //PB7
+#define SPI_HW_SS_PIN (4)   // PB4
+#define SPI_HW_MOSI_PIN (5) // PB5
+#define SPI_HW_MISO_PIN (6) // PB6
+#define SPI_HW_SCK_PIN (7)  // PB7
 
 #if defined(__AVR_ATmega324PB__)
 #define __digitalPinToPortReg(P) \
@@ -211,7 +211,7 @@
 #if defined(SANGUINO_PINOUT)
 #define __digitalPinToBit(P) \
   (((P) >= 0 && (P) <= 7) ? (P) : (((P) >= 8 && (P) <= 15) ? (P)-8 : (((P) >= 16 && (P) <= 23) ? (P)-16 : (((P) >= 16 && (P) <= 23) ? (7 - ((P)-24)) : (P)-32))))
-#else //MightyCore Pinout
+#else // MightyCore Pinout
 #define __digitalPinToBit(P) \
   (((P) >= 0 && (P) <= 7) ? (P) : (((P) >= 8 && (P) <= 15) ? (P)-8 : (((P) >= 16 && (P) <= 23) ? (P)-16 : (((P) >= 16 && (P) <= 23) ? (P)-24 : (P)-32))))
 #endif
@@ -225,7 +225,7 @@
 #if defined(SANGUINO_PINOUT)
 #define __digitalPinToBit(P) \
   (((P) >= 0 && (P) <= 7) ? (P) : (((P) >= 8 && (P) <= 15) ? (P)-8 : (((P) >= 16 && (P) <= 23) ? (P)-16 : (7 - ((P)-24)))))
-#else //MightyCore Pinout
+#else // MightyCore Pinout
 #define __digitalPinToBit(P) \
   (((P) >= 0 && (P) <= 7) ? (P) : (((P) >= 8 && (P) <= 15) ? (P)-8 : (((P) >= 16 && (P) <= 23) ? (P)-16 : (P)-24)))
 #endif
@@ -236,23 +236,26 @@
        defined(__AVR_ATmega16U4__) ||   \
        defined(__AVR_ATmega32U4__))
 
-#define UART_RX_PIN (0) //PD2
-#define UART_TX_PIN (1) //PD3
+#define UART_RX_PIN (0) // PD2
+#define UART_TX_PIN (1) // PD3
 
-#define I2C_SDA_PIN (2) //PD1
-#define I2C_SCL_PIN (3) //PD0
+#define I2C_SDA_PIN (2) // PD1
+#define I2C_SCL_PIN (3) // PD0
 
-#define SPI_HW_SS_PIN (17)   //PB0
-#define SPI_HW_MOSI_PIN (16) //PB2
-#define SPI_HW_MISO_PIN (14) //PB3
-#define SPI_HW_SCK_PIN (15)  //PB1
+#define SPI_HW_SS_PIN (17)   // PB0
+#define SPI_HW_MOSI_PIN (16) // PB2
+#define SPI_HW_MISO_PIN (14) // PB3
+#define SPI_HW_SCK_PIN (15)  // PB1
 
-#define __digitalPinToPortReg(P) \
-  ((((P) >= 0 && (P) <= 4) || (P) == 6 || (P) == 12 || (P) == 24 || (P) == 25 || (P) == 29) ? &PORTD : (((P) == 5 || (P) == 13) ? &PORTC : (((P) >= 18 && (P) <= 23)) ? &PORTF : (((P) == 7) ? &PORTE : &PORTB)))
-#define __digitalPinToDDRReg(P) \
-  ((((P) >= 0 && (P) <= 4) || (P) == 6 || (P) == 12 || (P) == 24 || (P) == 25 || (P) == 29) ? &DDRD : (((P) == 5 || (P) == 13) ? &DDRC : (((P) >= 18 && (P) <= 23)) ? &DDRF : (((P) == 7) ? &DDRE : &DDRB)))
-#define __digitalPinToPINReg(P) \
-  ((((P) >= 0 && (P) <= 4) || (P) == 6 || (P) == 12 || (P) == 24 || (P) == 25 || (P) == 29) ? &PIND : (((P) == 5 || (P) == 13) ? &PINC : (((P) >= 18 && (P) <= 23)) ? &PINF : (((P) == 7) ? &PINE : &PINB)))
+#define __digitalPinToPortReg(P)                                                                                                                                               \
+  ((((P) >= 0 && (P) <= 4) || (P) == 6 || (P) == 12 || (P) == 24 || (P) == 25 || (P) == 29) ? &PORTD : (((P) == 5 || (P) == 13) ? &PORTC : (((P) >= 18 && (P) <= 23)) ? &PORTF \
+                                                                                                                                                                      : (((P) == 7) ? &PORTE : &PORTB)))
+#define __digitalPinToDDRReg(P)                                                                                                                                             \
+  ((((P) >= 0 && (P) <= 4) || (P) == 6 || (P) == 12 || (P) == 24 || (P) == 25 || (P) == 29) ? &DDRD : (((P) == 5 || (P) == 13) ? &DDRC : (((P) >= 18 && (P) <= 23)) ? &DDRF \
+                                                                                                                                                                    : (((P) == 7) ? &DDRE : &DDRB)))
+#define __digitalPinToPINReg(P)                                                                                                                                             \
+  ((((P) >= 0 && (P) <= 4) || (P) == 6 || (P) == 12 || (P) == 24 || (P) == 25 || (P) == 29) ? &PIND : (((P) == 5 || (P) == 13) ? &PINC : (((P) >= 18 && (P) <= 23)) ? &PINF \
+                                                                                                                                                                    : (((P) == 7) ? &PINE : &PINB)))
 #define __digitalPinToBit(P) \
   (((P) >= 8 && (P) <= 11) ? (P)-4 : (((P) >= 18 && (P) <= 21) ? 25 - (P) : (((P) == 0) ? 2 : (((P) == 1) ? 3 : (((P) == 2) ? 1 : (((P) == 3) ? 0 : (((P) == 4) ? 4 : (((P) == 6) ? 7 : (((P) == 13) ? 7 : (((P) == 14) ? 3 : (((P) == 15) ? 1 : (((P) == 16) ? 2 : (((P) == 17) ? 0 : (((P) == 22) ? 1 : (((P) == 23) ? 0 : (((P) == 24) ? 4 : (((P) == 25) ? 7 : (((P) == 26) ? 4 : (((P) == 27) ? 5 : 6)))))))))))))))))))
 
@@ -272,16 +275,16 @@
        defined(__AVR_ATmega328P__) ||      \
        defined(__AVR_ATmega328PB__))
 
-#define UART_RX_PIN (0) //PD0
-#define UART_TX_PIN (1) //PD1
+#define UART_RX_PIN (0) // PD0
+#define UART_TX_PIN (1) // PD1
 
-#define I2C_SDA_PIN (18) //A4
-#define I2C_SCL_PIN (19) //A5
+#define I2C_SDA_PIN (18) // A4
+#define I2C_SCL_PIN (19) // A5
 
-#define SPI_HW_SS_PIN (10)   //PB0
-#define SPI_HW_MOSI_PIN (11) //PB2
-#define SPI_HW_MISO_PIN (12) //PB3
-#define SPI_HW_SCK_PIN (13)  //PB1
+#define SPI_HW_SS_PIN (10)   // PB0
+#define SPI_HW_MOSI_PIN (11) // PB2
+#define SPI_HW_MISO_PIN (12) // PB3
+#define SPI_HW_SCK_PIN (13)  // PB1
 
 #if defined(__AVR_ATmega48PB__) || defined(__AVR_ATmega88PB__) || defined(__AVR_ATmega168PB__) || defined(__AVR_ATmega328PB__)
 #define __digitalPinToPortReg(P) \
@@ -306,25 +309,42 @@
 // --- Arduino Uno WiFi Rev 2, Nano Every ---
 #elif defined(__AVR_ATmega4809__)
 
-#define UART_RX_PIN (0) //PB0
-#define UART_TX_PIN (1) //PB1
+#define UART_RX_PIN (0) // PB0
+#define UART_TX_PIN (1) // PB1
 
-#define I2C_SDA_PIN (22) //PA2
-#define I2C_SCL_PIN (23) //PA3
+#define I2C_SDA_PIN (22) // PA2
+#define I2C_SCL_PIN (23) // PA3
 
-#define SPI_HW_SS_PIN (8)    //PE3
-#define SPI_HW_MOSI_PIN (11) //PE0
-#define SPI_HW_MISO_PIN (12) //PE1
-#define SPI_HW_SCK_PIN (13)  //PE2
+#define SPI_HW_SS_PIN (8)    // PE3
+#define SPI_HW_MOSI_PIN (11) // PE0
+#define SPI_HW_MISO_PIN (12) // PE1
+#define SPI_HW_SCK_PIN (13)  // PE2
 
-#define __digitalPinToPortReg(P) \
-  (((P) == 2 || (P) == 7) ? &VPORTA.OUT : ((P) == 5 || (P) == 9 || (P) == 10) ? &VPORTB.OUT : ((P) == 4) ? &VPORTC.OUT : (((P) >= 14 && (P) <= 17) || (P) == 20 || (P) == 21) ? &VPORTD.OUT : ((P) == 8 || (P) == 11 || (P) == 12 || (P) == 13) ? &VPORTE.OUT : &VPORTF.OUT)
-#define __digitalPinToDDRReg(P) \
-  (((P) == 2 || (P) == 7) ? &VPORTA.DIR : ((P) == 5 || (P) == 9 || (P) == 10) ? &VPORTB.DIR : ((P) == 4) ? &VPORTC.DIR : (((P) >= 14 && (P) <= 17) || (P) == 20 || (P) == 21) ? &VPORTD.DIR : ((P) == 8 || (P) == 11 || (P) == 12 || (P) == 13) ? &VPORTE.DIR : &VPORTF.DIR)
-#define __digitalPinToPINReg(P) \
-  (((P) == 2 || (P) == 7) ? &VPORTA.IN : ((P) == 5 || (P) == 9 || (P) == 10) ? &VPORTB.IN : ((P) == 4) ? &VPORTC.IN : (((P) >= 14 && (P) <= 17) || (P) == 20 || (P) == 21) ? &VPORTD.IN : ((P) == 8 || (P) == 11 || (P) == 12 || (P) == 13) ? &VPORTE.IN : &VPORTF.IN)
-#define __digitalPinToBit(P) \
-  (((P) == 2 || (P) == 9 || (P) == 11 || (P) == 17) ? 0 : ((P) == 7 || (P) == 10 || (P) == 12 || (P) == 16) ? 1 : ((P) == 5 || (P) == 13 || (P) == 15 || (P) == 18) ? 2 : ((P) == 9 || (P) == 14 || (P) == 19) ? 3 : ((P) == 6 || (P) == 20) ? 4 : ((P) == 3 || (P) == 21) ? 5 : 6)
+#define __digitalPinToPortReg(P)                                                                           \
+  (((P) == 2 || (P) == 7) ? &VPORTA.OUT : ((P) == 5 || (P) == 9 || (P) == 10)                ? &VPORTB.OUT \
+                                      : ((P) == 4)                                           ? &VPORTC.OUT \
+                                      : (((P) >= 14 && (P) <= 17) || (P) == 20 || (P) == 21) ? &VPORTD.OUT \
+                                      : ((P) == 8 || (P) == 11 || (P) == 12 || (P) == 13)    ? &VPORTE.OUT \
+                                                                                             : &VPORTF.OUT)
+#define __digitalPinToDDRReg(P)                                                                            \
+  (((P) == 2 || (P) == 7) ? &VPORTA.DIR : ((P) == 5 || (P) == 9 || (P) == 10)                ? &VPORTB.DIR \
+                                      : ((P) == 4)                                           ? &VPORTC.DIR \
+                                      : (((P) >= 14 && (P) <= 17) || (P) == 20 || (P) == 21) ? &VPORTD.DIR \
+                                      : ((P) == 8 || (P) == 11 || (P) == 12 || (P) == 13)    ? &VPORTE.DIR \
+                                                                                             : &VPORTF.DIR)
+#define __digitalPinToPINReg(P)                                                                          \
+  (((P) == 2 || (P) == 7) ? &VPORTA.IN : ((P) == 5 || (P) == 9 || (P) == 10)                ? &VPORTB.IN \
+                                     : ((P) == 4)                                           ? &VPORTC.IN \
+                                     : (((P) >= 14 && (P) <= 17) || (P) == 20 || (P) == 21) ? &VPORTD.IN \
+                                     : ((P) == 8 || (P) == 11 || (P) == 12 || (P) == 13)    ? &VPORTE.IN \
+                                                                                            : &VPORTF.IN)
+#define __digitalPinToBit(P)                                                                                    \
+  (((P) == 2 || (P) == 9 || (P) == 11 || (P) == 17) ? 0 : ((P) == 7 || (P) == 10 || (P) == 12 || (P) == 16) ? 1 \
+                                                      : ((P) == 5 || (P) == 13 || (P) == 15 || (P) == 18)   ? 2 \
+                                                      : ((P) == 9 || (P) == 14 || (P) == 19)                ? 3 \
+                                                      : ((P) == 6 || (P) == 20)                             ? 4 \
+                                                      : ((P) == 3 || (P) == 21)                             ? 5 \
+                                                                                                            : 6)
 
 // TinyCore
 // https://raw.githubusercontent.com/xukangmin/TinyCore/master/avr/package/package_tinycore_index.json

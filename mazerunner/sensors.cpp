@@ -278,9 +278,9 @@ void start_sensor_cycle() {
  * and the sensors are idle until triggered again.
  *
  * The ADC service runs all th etime even with the sensors 'disabled'. In this
- * software, 'enabled' only means that the emitters are turned on in the second 
+ * software, 'enabled' only means that the emitters are turned on in the second
  * phase. Without that, you might expect the sensor readings to be zero.
- * 
+ *
  * Timing tests indicate that the sensor ISR consumes no more that 5% of the
  * available system bandwidth.
  *
