@@ -18,7 +18,7 @@ env.AddPostAction(
     "$BUILD_DIR/${PROGNAME}.elf",
     env.VerboseAction(" ".join([
         "avr-size", "$BUILD_DIR/${PROGNAME}.elf"
-    ]), "Building $BUILD_DIR/${PROGNAME}.hex")
+    ]), "\nBuilt $BUILD_DIR/${PROGNAME}.hex")
 )
 # Make listing
 env.AddPostAction(
@@ -41,7 +41,7 @@ if len(error) == 0:
             "${PROJECT_SRC_DIR}/*.cpp",
             "${PROJECT_SRC_DIR}/*.h",
             "${PROJECT_SRC_DIR}/*.ino",
-        ]), "Format sources in ${PROJECT_SRC_DIR}")
+        ]), "Format sources in ${PROJECT_SRC_DIR}\n")
     )
 
 
