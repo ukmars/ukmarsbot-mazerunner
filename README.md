@@ -8,14 +8,14 @@ The code assumes you have a standard UKMARSBOT assembled, using an Arduino nano 
 
 ### Arduino IDE users
 
-For the impatient, if you are wanting to run this code in the Arduino IDE then you can download or clone the complete repository and simply open the mazerunner.ino file. The rduino IDE will be able to build and flash the prject. It will also open all the other files in the mazerunner directory. That may be surprising to you but it is just trying to be helpful.
+For the impatient, if you are wanting to run this code in the Arduino IDE then you can download or clone the complete repository and simply open the mazerunner.ino file. The Arduino IDE will be able to build and flash the prject. It will also open all the other files in the mazerunner directory. That may be surprising to you but it is just trying to be helpful.
 
 
 ### Platform IO users
 
-The project is maintained and developed using PlatformIO with Visual Studio Code. If you have not used this as a development platform, I highly recommend it as a huge improvement over the very dated Arduino IDE. You can find instructions for installing VSCode and PlatformIO at https://ukmars.org/resources/platformio-vscode-windows/
+The project is maintained and developed using PlatformIO with Visual Studio Code. If you have not used this as a development platform, I highly recommend it as a huge improvement over the very dated Arduino IDE (yes, even the new version). You can find instructions for installing VSCode and PlatformIO at https://ukmars.org/resources/platformio-vscode-windows/
 
-Before getting too carried away, look at the platformio.ini file and make whatever changes are needed for your operating environment. You will see, in the default environment, an entry for a **extra script**. This runs the python file  **`post-build-script.py`**. The script runs after a successful build of the software and performs a number of additional actions:
+Before getting too carried away, look at the platformio.ini file and make whatever changes are needed for your operating environment. You will see, in the default environment, an entry for an **extra script**. This runs the python file  **`post-build-script.py`**. The script runs after a successful build of the software and performs a number of additional actions:
 -  Generate an assembly code listing in the file `firmware.lst`. This is for the old-school nerds and the terminally curious. It has no effect on the operation of the robot.
 - Display some additional information about the size of the flash and RAM used in the code. Only interesting if you think you are running out of one or the other.
 - Runs **clang-format** to reformat all the code in the project so that it has consistency in terms of things like indents and the use of whitespace. You should always use a formatter for code that is to be submitted to the repository. The clang-format settings file is also included in the project. If clang-format is not present on your system the script should just bypass this step. I recommend that you do install clang-format at some point though. It is very useful.
@@ -48,7 +48,7 @@ Change this so that ```USER_MODE``` is ```true``` and the code will use the swit
 
 ## Updates
 
-Be aware that, if you download a newer copy of the code, and simply unpack it into te same folder, you will over-write config.h, user.h and user.cpp and your changes will be lost. don't do that.
+Be aware that, if you download a newer copy of the code, and simply unpack it into the same folder, you will over-write config.h, user.h and user.cpp and your changes will be lost. Don't be like Bob - don't do that.
 
 This is an early release of the code and you can expect several updates.
 
