@@ -28,8 +28,8 @@
 #include "queue.h"
 #include <avr/pgmspace.h>
 
-uint8_t cost[256];
-uint8_t walls[256] __attribute__((section(".noinit"))); // the maze walls are preserved after a reset
+uint8_t cost[MAZE_CELLS];
+uint8_t walls[MAZE_CELLS] __attribute__((section(".noinit"))); // the maze walls are preserved after a reset
 
 static uint8_t s_goal = GOAL;
 
@@ -116,7 +116,7 @@ void set_wall_absent(uint8_t cell, uint8_t direction) {
  *
  */
 void initialise_maze(const uint8_t *testMaze = nullptr) {
-  for (int i = 0; i < 256; i++) {
+  for (int i = 0; i < MAZE_CELLS; i++) {
     cost[i] = 0;
     walls[i] = 0;
   }
@@ -125,11 +125,11 @@ void initialise_maze(const uint8_t *testMaze = nullptr) {
     return;
   }
   // place the boundary walls.
-  for (uint8_t i = 0; i < 16; i++) {
+  for (uint8_t i = 0; i < MAZE_WIDTH; i++) {
     set_wall_present(i, WEST);
-    set_wall_present(15 * 16 + i, EAST);
-    set_wall_present(i * 16, SOUTH);
-    set_wall_present((16 * i + 15), NORTH);
+    set_wall_present((MAZE_WIDTH * (MAZE_WIDTH - 1)) + i, EAST);
+    set_wall_present(i * MAZE_WIDTH, SOUTH);
+    set_wall_present((MAZE_WIDTH * i + MAZE_WIDTH - 1), NORTH);
   }
   // and the start cell walls.
   set_wall_present(START, EAST);
@@ -142,17 +142,17 @@ uint8_t cell_north(uint8_t cell) {
 }
 
 uint8_t cell_east(uint8_t cell) {
-  uint8_t nextCell = (cell + (16));
+  uint8_t nextCell = (cell + (MAZE_WIDTH));
   return nextCell;
 }
 
 uint8_t cell_south(uint8_t cell) {
-  uint8_t nextCell = (cell + (255));
+  uint8_t nextCell = (cell + (MAZE_CELLS - 1));
   return nextCell;
 }
 
 uint8_t cell_west(uint8_t cell) {
-  uint8_t nextCell = (cell + (240));
+  uint8_t nextCell = (cell + (MAZE_CELLS - MAZE_WIDTH));
   return nextCell;
 }
 
@@ -222,7 +222,7 @@ uint8_t neighbour_cost(uint8_t cell, uint8_t direction) {
  * @param target - the cell from which all distances are calculated
  */
 void flood_maze(uint8_t target) {
-  for (int i = 0; i < 256; i++) {
+  for (int i = 0; i < MAZE_CELLS; i++) {
     cost[i] = MAX_COST;
   }
   Queue<uint8_t> queue;
@@ -293,7 +293,7 @@ uint8_t direction_to_smallest(uint8_t cell, uint8_t startDirection) {
  * them without using the PROGMEM stuff
  */
 void copy_walls_from_flash(const uint8_t *src) {
-  memcpy_P(walls, src, 256);
+  memcpy_P(walls, src, MAZE_CELLS);
 }
 
 // some sample maze data

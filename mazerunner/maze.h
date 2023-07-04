@@ -30,6 +30,7 @@
 #include <stdint.h>
 
 #define MAZE_WIDTH 16
+#define MAZE_CELLS (MAZE_WIDTH * MAZE_WIDTH)
 #define GOAL 0x77
 #define START 0x00
 
@@ -47,8 +48,8 @@
 extern const uint8_t emptyMaze[];
 extern const uint8_t japan2007[];
 
-extern uint8_t cost[256];
-extern uint8_t walls[256];
+extern uint8_t cost[MAZE_WIDTH * MAZE_WIDTH];
+extern uint8_t walls[MAZE_WIDTH * MAZE_WIDTH];
 
 // tables give new direction from current heading and next turn
 const unsigned char DtoR[] = {1, 2, 3, 0};

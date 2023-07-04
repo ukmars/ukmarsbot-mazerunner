@@ -303,8 +303,8 @@ void print_justified(int value, int width) {
  */
 
 void printNorthWalls(int row) {
-  for (int col = 0; col < 16; col++) {
-    unsigned char cell = row + 16 * col;
+  for (int col = 0; col < MAZE_WIDTH; col++) {
+    unsigned char cell = row + MAZE_WIDTH * col;
     Serial.print('o');
     if (is_wall(cell, NORTH)) {
       Serial.print(("---"));
@@ -316,8 +316,8 @@ void printNorthWalls(int row) {
 }
 
 void printSouthWalls(int row) {
-  for (int col = 0; col < 16; col++) {
-    unsigned char cell = row + 16 * col;
+  for (int col = 0; col < MAZE_WIDTH; col++) {
+    unsigned char cell = row + MAZE_WIDTH * col;
     Serial.print('o');
     if (is_wall(cell, SOUTH)) {
       Serial.print(("---"));
@@ -330,10 +330,10 @@ void printSouthWalls(int row) {
 
 void print_maze_plain() {
   Serial.println();
-  for (int row = 15; row >= 0; row--) {
+  for (int row = MAZE_WIDTH - 1; row >= 0; row--) {
     printNorthWalls(row);
-    for (int col = 0; col < 16; col++) {
-      unsigned char cell = static_cast<unsigned char>(row + 16 * col);
+    for (int col = 0; col < MAZE_WIDTH; col++) {
+      unsigned char cell = static_cast<unsigned char>(row + MAZE_WIDTH * col);
       if (is_exit(cell, WEST)) {
         Serial.print(("    "));
       } else {
@@ -350,10 +350,10 @@ void print_maze_plain() {
 void print_maze_with_costs() {
   Serial.println();
   ;
-  for (int row = 15; row >= 0; row--) {
+  for (int row = MAZE_WIDTH - 1; row >= 0; row--) {
     printNorthWalls(row);
-    for (int col = 0; col < 16; col++) {
-      unsigned char cell = static_cast<unsigned char>(row + 16 * col);
+    for (int col = 0; col < MAZE_WIDTH; col++) {
+      unsigned char cell = static_cast<unsigned char>(row + MAZE_WIDTH * col);
       if (is_exit(cell, WEST)) {
         Serial.print(' ');
       } else {
@@ -373,10 +373,10 @@ static char dirChars[] = "^>v<*";
 void print_maze_with_directions() {
   Serial.println();
   flood_maze(maze_goal());
-  for (int row = 15; row >= 0; row--) {
+  for (int row = MAZE_WIDTH - 1; row >= 0; row--) {
     printNorthWalls(row);
-    for (int col = 0; col < 16; col++) {
-      unsigned char cell = row + 16 * col;
+    for (int col = 0; col < MAZE_WIDTH; col++) {
+      unsigned char cell = row + MAZE_WIDTH * col;
       if (is_wall(cell, WEST)) {
         Serial.print('|');
       } else {
@@ -400,9 +400,9 @@ void print_maze_with_directions() {
 void print_maze_wall_data() {
   Serial.println();
   ;
-  for (int row = 15; row >= 0; row--) {
-    for (int col = 0; col < 16; col++) {
-      int cell = row + 16 * col;
+  for (int row = MAZE_WIDTH - 1; row >= 0; row--) {
+    for (int col = 0; col < MAZE_WIDTH; col++) {
+      int cell = row + MAZE_WIDTH * col;
       print_hex_2(walls[cell]);
       Serial.print(' ');
     }
