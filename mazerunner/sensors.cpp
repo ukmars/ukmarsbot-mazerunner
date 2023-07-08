@@ -126,7 +126,7 @@ int get_switches() {
  * experiment with that as well.
  *
  * @brief Calculate the steering adjustment from the cross-track error.
- * @param error calculated from wall sensors, Negative if too far right
+ * @param error calculated from wall sensors, Negative if too far left
  * @return steering adjustment in degrees
  */
 float calculate_steering_adjustment(float error) {
