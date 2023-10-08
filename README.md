@@ -1,6 +1,14 @@
 # ukmarsbot-mazerunner
 
-This repository will hold a complete set of code for a version of UKMARSBOT that can run in a classic micromouse maze.
+# DEPRECATED
+
+This code wil be retired as it is poorly structured and overly complex. For new projects you should look at the more recent mazerunner-core repository found here:
+
+https://github.com/ukmars/mazerunner-core
+
+---
+
+This repository holds a complete set of code for a version of UKMARSBOT that can run in a classic micromouse maze.
 
 The main branch has the functional components. The implementation of these into a working micromouse are in the Dorothy branch.
 
